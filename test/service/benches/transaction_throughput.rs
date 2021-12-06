@@ -18,7 +18,7 @@
 
 use criterion::{criterion_group, criterion_main, BatchSize, Criterion, Throughput};
 use cumulus_test_runtime::{AccountId, BalancesCall, SudoCall};
-use futures::{future, join, StreamExt};
+use futures::{future, StreamExt};
 use polkadot_service::polkadot_runtime::constants::currency::DOLLARS;
 use sc_transaction_pool_api::{TransactionPool as _, TransactionSource, TransactionStatus};
 use sp_core::{crypto::Pair, sr25519};
@@ -238,15 +238,6 @@ fn transaction_throughput_benchmarks(c: &mut Criterion) {
 			)
 		},
 	);
-
-	runtime.block_on(async {
-		join!(
-			alice.task_manager.clean_shutdown(),
-			bob.task_manager.clean_shutdown(),
-			charlie.task_manager.clean_shutdown(),
-			dave.task_manager.clean_shutdown(),
-		)
-	});
 }
 
 criterion_group!(benches, transaction_throughput_benchmarks);
