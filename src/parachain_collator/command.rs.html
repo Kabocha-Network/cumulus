@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `parachain-template&#x2F;node&#x2F;src&#x2F;command.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>command.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../parachain_collator/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input"name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `parachain-template&#x2F;node&#x2F;src&#x2F;command.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>command.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../parachain_collator/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -403,8 +403,21 @@
 <span id="403">403</span>
 <span id="404">404</span>
 <span id="405">405</span>
-</pre><pre class="rust">
-<span class="kw">use</span> <span class="kw">crate</span>::{
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
 	<span class="ident">chain_spec</span>,
 	<span class="ident">cli</span>::{<span class="ident">Cli</span>, <span class="ident">RelayChainCli</span>, <span class="ident">Subcommand</span>},
 	<span class="ident">service</span>::{<span class="ident">new_partial</span>, <span class="ident">TemplateRuntimeExecutor</span>},
@@ -419,19 +432,20 @@
 	<span class="ident">ChainSpec</span>, <span class="ident">CliConfiguration</span>, <span class="ident">DefaultConfigurationValues</span>, <span class="ident">ImportParams</span>, <span class="ident">KeystoreParams</span>,
 	<span class="ident">NetworkParams</span>, <span class="prelude-ty">Result</span>, <span class="ident">RuntimeVersion</span>, <span class="ident">SharedParams</span>, <span class="ident">SubstrateCli</span>,
 };
-<span class="kw">use</span> <span class="ident">sc_service::config</span>::{<span class="ident">BasePath</span>, <span class="ident">PrometheusConfig</span>};
+<span class="kw">use</span> <span class="ident">sc_service</span>::{
+	<span class="ident">config</span>::{<span class="ident">BasePath</span>, <span class="ident">PrometheusConfig</span>},
+	<span class="ident">TaskManager</span>,
+};
 <span class="kw">use</span> <span class="ident">sp_core::hexdisplay::HexDisplay</span>;
 <span class="kw">use</span> <span class="ident">sp_runtime::traits::Block</span> <span class="kw">as</span> <span class="ident">BlockT</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">io::Write</span>, <span class="ident">net::SocketAddr</span>};
 
-<span class="kw">fn</span> <span class="ident">load_spec</span>(
-	<span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-	<span class="ident">para_id</span>: <span class="ident">ParaId</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">sc_service::ChainSpec</span><span class="op">&gt;</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">load_spec</span>(<span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">sc_service::ChainSpec</span><span class="op">&gt;</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="ident">id</span> {
-		<span class="string">&quot;dev&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Box::new</span>(<span class="ident">chain_spec::development_config</span>(<span class="ident">para_id</span>)),
-		<span class="string">&quot;template-rococo&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Box::new</span>(<span class="ident">chain_spec::local_testnet_config</span>(<span class="ident">para_id</span>)),
-		<span class="string">&quot;&quot;</span> <span class="op">|</span> <span class="string">&quot;local&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Box::new</span>(<span class="ident">chain_spec::local_testnet_config</span>(<span class="ident">para_id</span>)),
+		<span class="string">&quot;dev&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Box::new</span>(<span class="ident">chain_spec::development_config</span>()),
+		<span class="string">&quot;template-rococo&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Box::new</span>(<span class="ident">chain_spec::local_testnet_config</span>()),
+		<span class="string">&quot;cha&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Box::new</span>(<span class="ident">chain_spec::chachacha_config</span>()), 
+		<span class="string">&quot;&quot;</span> <span class="op">|</span> <span class="string">&quot;local&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Box::new</span>(<span class="ident">chain_spec::local_testnet_config</span>()),
 		<span class="ident">path</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_file</span>(<span class="ident">std::path::PathBuf::from</span>(<span class="ident">path</span>))<span class="question-mark">?</span>),
 	})
 }
@@ -446,13 +460,11 @@
 	}
 
 	<span class="kw">fn</span> <span class="ident">description</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-		<span class="macro">format!</span>(
-			<span class="string">&quot;Parachain Collator Template\n\nThe command-line arguments provided first will be \
+		<span class="string">&quot;Parachain Collator Template\n\nThe command-line arguments provided first will be \
 		passed to the parachain node, while the arguments provided after -- will be passed \
-		to the relaychain node.\n\n\
-		{} [parachain-args] -- [relaychain-args]&quot;</span>,
-			<span class="self">Self</span><span class="ident">::executable_name</span>()
-		)
+		to the relay chain node.\n\n\
+		parachain-collator &lt;parachain-args&gt; -- &lt;relay-chain-args&gt;&quot;</span>
+			.<span class="ident">into</span>()
 	}
 
 	<span class="kw">fn</span> <span class="ident">author</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
@@ -468,7 +480,7 @@
 	}
 
 	<span class="kw">fn</span> <span class="ident">load_spec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">sc_service::ChainSpec</span><span class="op">&gt;</span>, <span class="ident">String</span><span class="op">&gt;</span> {
-		<span class="ident">load_spec</span>(<span class="ident">id</span>, <span class="self">self</span>.<span class="ident">run</span>.<span class="ident">parachain_id</span>.<span class="ident">unwrap_or</span>(<span class="number">2000</span>).<span class="ident">into</span>())
+		<span class="ident">load_spec</span>(<span class="ident">id</span>)
 	}
 
 	<span class="kw">fn</span> <span class="ident">native_runtime_version</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ChainSpec</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">RuntimeVersion</span> {
@@ -488,8 +500,8 @@
 	<span class="kw">fn</span> <span class="ident">description</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
 		<span class="string">&quot;Parachain Collator Template\n\nThe command-line arguments provided first will be \
 		passed to the parachain node, while the arguments provided after -- will be passed \
-		to the relaychain node.\n\n\
-		parachain-collator [parachain-args] -- [relaychain-args]&quot;</span>
+		to the relay chain node.\n\n\
+		parachain-collator &lt;parachain-args&gt; -- &lt;relay-chain-args&gt;&quot;</span>
 			.<span class="ident">into</span>()
 	}
 
@@ -534,7 +546,7 @@
 				<span class="kw">_</span>
 			<span class="op">&gt;</span>(
 				<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>,
-				<span class="kw">crate</span><span class="ident">::service::parachain_build_import_queue</span>,
+				<span class="ident"><span class="kw">crate</span>::service::parachain_build_import_queue</span>,
 			)<span class="question-mark">?</span>;
 			<span class="kw">let</span> <span class="ident">task_manager</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span>.<span class="ident">task_manager</span>;
 			{ $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span> )<span class="op">*</span> }.<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> (<span class="ident">v</span>, <span class="ident">task_manager</span>))
@@ -577,7 +589,7 @@
 			<span class="ident">runner</span>.<span class="ident">sync_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="kw">let</span> <span class="ident">polkadot_cli</span> <span class="op">=</span> <span class="ident">RelayChainCli::new</span>(
 					<span class="kw-2">&amp;</span><span class="ident">config</span>,
-					[<span class="ident">RelayChainCli::executable_name</span>()].<span class="ident">iter</span>().<span class="ident">chain</span>(<span class="ident">cli</span>.<span class="ident">relaychain_args</span>.<span class="ident">iter</span>()),
+					[<span class="ident">RelayChainCli::executable_name</span>()].<span class="ident">iter</span>().<span class="ident">chain</span>(<span class="ident">cli</span>.<span class="ident">relay_chain_args</span>.<span class="ident">iter</span>()),
 				);
 
 				<span class="kw">let</span> <span class="ident">polkadot_config</span> <span class="op">=</span> <span class="ident">SubstrateCli::create_configuration</span>(
@@ -600,10 +612,8 @@
 			<span class="ident">builder</span>.<span class="ident">with_profiling</span>(<span class="ident">sc_tracing::TracingReceiver::Log</span>, <span class="string">&quot;&quot;</span>);
 			<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">builder</span>.<span class="ident">init</span>();
 
-			<span class="kw">let</span> <span class="ident">block</span>: <span class="ident">Block</span> <span class="op">=</span> <span class="ident">generate_genesis_block</span>(<span class="kw-2">&amp;</span><span class="ident">load_spec</span>(
-				<span class="kw-2">&amp;</span><span class="ident">params</span>.<span class="ident">chain</span>.<span class="ident">clone</span>().<span class="ident">unwrap_or_default</span>(),
-				<span class="ident">params</span>.<span class="ident">parachain_id</span>.<span class="ident">unwrap_or</span>(<span class="number">2000</span>).<span class="ident">into</span>(),
-			)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
+			<span class="kw">let</span> <span class="ident">block</span>: <span class="ident">Block</span> <span class="op">=</span>
+				<span class="ident">generate_genesis_block</span>(<span class="kw-2">&amp;</span><span class="ident">load_spec</span>(<span class="kw-2">&amp;</span><span class="ident">params</span>.<span class="ident">chain</span>.<span class="ident">clone</span>().<span class="ident">unwrap_or_default</span>())<span class="question-mark">?</span>)<span class="question-mark">?</span>;
 			<span class="kw">let</span> <span class="ident">raw_header</span> <span class="op">=</span> <span class="ident">block</span>.<span class="ident">header</span>().<span class="ident">encode</span>();
 			<span class="kw">let</span> <span class="ident">output_buf</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">params</span>.<span class="ident">raw</span> {
 				<span class="ident">raw_header</span>
@@ -650,19 +660,36 @@
 				You can enable it with `--features runtime-benchmarks`.&quot;</span>
 					.<span class="ident">into</span>())
 			},
+		<span class="prelude-val">Some</span>(<span class="ident">Subcommand::TryRuntime</span>(<span class="ident">cmd</span>)) <span class="op">=</span><span class="op">&gt;</span>
+			<span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try-runtime&quot;</span>) {
+				<span class="kw">let</span> <span class="ident">runner</span> <span class="op">=</span> <span class="ident">cli</span>.<span class="ident">create_runner</span>(<span class="ident">cmd</span>)<span class="question-mark">?</span>;
+
+				<span class="comment">// grab the task manager.</span>
+				<span class="kw">let</span> <span class="ident">registry</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">runner</span>.<span class="ident">config</span>().<span class="ident">prometheus_config</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">cfg</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">cfg</span>.<span class="ident">registry</span>);
+				<span class="kw">let</span> <span class="ident">task_manager</span> <span class="op">=</span>
+					<span class="ident">TaskManager::new</span>(<span class="ident">runner</span>.<span class="ident">config</span>().<span class="ident">tokio_handle</span>.<span class="ident">clone</span>(), <span class="kw-2">*</span><span class="ident">registry</span>)
+						.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;Error: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
+
+				<span class="ident">runner</span>.<span class="ident">async_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+					<span class="prelude-val">Ok</span>((<span class="ident">cmd</span>.<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">TemplateRuntimeExecutor</span><span class="op">&gt;</span>(<span class="ident">config</span>), <span class="ident">task_manager</span>))
+				})
+			} <span class="kw">else</span> {
+				<span class="prelude-val">Err</span>(<span class="string">&quot;Try-runtime must be enabled by `--features try-runtime`.&quot;</span>.<span class="ident">into</span>())
+			},
 		<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
 			<span class="kw">let</span> <span class="ident">runner</span> <span class="op">=</span> <span class="ident">cli</span>.<span class="ident">create_runner</span>(<span class="kw-2">&amp;</span><span class="ident">cli</span>.<span class="ident">run</span>.<span class="ident">normalize</span>())<span class="question-mark">?</span>;
 
 			<span class="ident">runner</span>.<span class="ident">run_node_until_exit</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> <span class="kw">async</span> <span class="kw">move</span> {
-				<span class="kw">let</span> <span class="ident">para_id</span> <span class="op">=</span>
-					<span class="ident">chain_spec::Extensions::try_get</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">config</span>.<span class="ident">chain_spec</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">para_id</span>);
+				<span class="kw">let</span> <span class="ident">para_id</span> <span class="op">=</span> <span class="ident">chain_spec::Extensions::try_get</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">config</span>.<span class="ident">chain_spec</span>)
+					.<span class="ident">map</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">para_id</span>)
+					.<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;Could not find parachain ID in chain-spec.&quot;</span>)<span class="question-mark">?</span>;
 
 				<span class="kw">let</span> <span class="ident">polkadot_cli</span> <span class="op">=</span> <span class="ident">RelayChainCli::new</span>(
 					<span class="kw-2">&amp;</span><span class="ident">config</span>,
-					[<span class="ident">RelayChainCli::executable_name</span>()].<span class="ident">iter</span>().<span class="ident">chain</span>(<span class="ident">cli</span>.<span class="ident">relaychain_args</span>.<span class="ident">iter</span>()),
+					[<span class="ident">RelayChainCli::executable_name</span>()].<span class="ident">iter</span>().<span class="ident">chain</span>(<span class="ident">cli</span>.<span class="ident">relay_chain_args</span>.<span class="ident">iter</span>()),
 				);
 
-				<span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">ParaId::from</span>(<span class="ident">cli</span>.<span class="ident">run</span>.<span class="ident">parachain_id</span>.<span class="ident">or</span>(<span class="ident">para_id</span>).<span class="ident">unwrap_or</span>(<span class="number">2000</span>));
+				<span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">ParaId::from</span>(<span class="ident">para_id</span>);
 
 				<span class="kw">let</span> <span class="ident">parachain_account</span> <span class="op">=</span>
 					<span class="ident">AccountIdConversion</span>::<span class="op">&lt;</span><span class="ident">polkadot_primitives::v0::AccountId</span><span class="op">&gt;</span><span class="ident">::into_account</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>);
@@ -681,7 +708,7 @@
 				<span class="macro">info!</span>(<span class="string">&quot;Parachain genesis state: {}&quot;</span>, <span class="ident">genesis_state</span>);
 				<span class="macro">info!</span>(<span class="string">&quot;Is collating: {}&quot;</span>, <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">role</span>.<span class="ident">is_authority</span>() { <span class="string">&quot;yes&quot;</span> } <span class="kw">else</span> { <span class="string">&quot;no&quot;</span> });
 
-				<span class="kw">crate</span><span class="ident">::service::start_parachain_node</span>(<span class="ident">config</span>, <span class="ident">polkadot_config</span>, <span class="ident">id</span>)
+				<span class="ident"><span class="kw">crate</span>::service::start_parachain_node</span>(<span class="ident">config</span>, <span class="ident">polkadot_config</span>, <span class="ident">id</span>)
 					.<span class="kw">await</span>
 					.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="number">0</span>)
 					.<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
@@ -809,7 +836,7 @@
 		<span class="self">self</span>.<span class="ident">base</span>.<span class="ident">base</span>.<span class="ident">telemetry_endpoints</span>(<span class="ident">chain_spec</span>)
 	}
 }
-</pre></div>
+</code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="parachain_collator" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
 </body></html>

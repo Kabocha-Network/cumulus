@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `parachain-template&#x2F;runtime&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../parachain_template_runtime/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input"name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `parachain-template&#x2F;runtime&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../parachain_template_runtime/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -835,26 +835,7 @@
 <span id="835">835</span>
 <span id="836">836</span>
 <span id="837">837</span>
-<span id="838">838</span>
-<span id="839">839</span>
-<span id="840">840</span>
-<span id="841">841</span>
-<span id="842">842</span>
-<span id="843">843</span>
-<span id="844">844</span>
-<span id="845">845</span>
-<span id="846">846</span>
-<span id="847">847</span>
-<span id="848">848</span>
-<span id="849">849</span>
-<span id="850">850</span>
-<span id="851">851</span>
-<span id="852">852</span>
-<span id="853">853</span>
-<span id="854">854</span>
-<span id="855">855</span>
-</pre><pre class="rust">
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
+</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 <span class="comment">// `construct_runtime!` does a lot of recursion and requires us to increase the limit to 256.</span>
 <span class="attribute">#![<span class="ident">recursion_limit</span> <span class="op">=</span> <span class="string">&quot;256&quot;</span>]</span>
 
@@ -879,7 +860,7 @@
 
 <span class="kw">use</span> <span class="ident">frame_support</span>::{
 	<span class="ident">construct_runtime</span>, <span class="ident">match_type</span>, <span class="ident">parameter_types</span>,
-	<span class="ident">traits::Everything</span>,
+	<span class="ident">traits</span>::{<span class="ident">Everything</span>, <span class="ident">Nothing</span>},
 	<span class="ident">weights</span>::{
 		<span class="ident">constants</span>::{<span class="ident">BlockExecutionWeight</span>, <span class="ident">ExtrinsicBaseWeight</span>, <span class="ident">WEIGHT_PER_SECOND</span>},
 		<span class="ident">DispatchClass</span>, <span class="ident">IdentityFee</span>, <span class="ident">Weight</span>, <span class="ident">WeightToFeeCoefficient</span>, <span class="ident">WeightToFeeCoefficients</span>,
@@ -889,7 +870,7 @@
 };
 <span class="kw">use</span> <span class="ident">frame_system</span>::{
 	<span class="ident">limits</span>::{<span class="ident">BlockLength</span>, <span class="ident">BlockWeights</span>},
-	<span class="ident">EnsureOneOf</span>, <span class="ident">EnsureRoot</span>,
+	<span class="ident">EnsureRoot</span>,
 };
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sp_consensus_aura::sr25519::AuthorityId</span> <span class="kw">as</span> <span class="ident">AuraId</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sp_runtime</span>::{<span class="ident">MultiAddress</span>, <span class="ident">Perbill</span>, <span class="ident">Permill</span>};
@@ -898,18 +879,18 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sp_runtime::BuildStorage</span>;
 
 <span class="comment">// Polkadot Imports</span>
-<span class="kw">use</span> <span class="ident">pallet_xcm</span>::{<span class="ident">EnsureXcm</span>, <span class="ident">IsMajorityOfBody</span>, <span class="ident">XcmPassthrough</span>};
+<span class="kw">use</span> <span class="ident">pallet_xcm::XcmPassthrough</span>;
 <span class="kw">use</span> <span class="ident">polkadot_parachain::primitives::Sibling</span>;
 <span class="kw">use</span> <span class="ident">polkadot_runtime_common</span>::{<span class="ident">BlockHashCount</span>, <span class="ident">RocksDbWeight</span>, <span class="ident">SlowAdjustingFeeUpdate</span>};
 
 <span class="comment">// XCM Imports</span>
 <span class="kw">use</span> <span class="ident">xcm::latest::prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">xcm_builder</span>::{
-	<span class="ident">AccountId32Aliases</span>, <span class="ident">AllowKnownQueryResponses</span>, <span class="ident">AllowSubscriptionsFrom</span>,
-	<span class="ident">AllowTopLevelPaidExecutionFrom</span>, <span class="ident">AllowUnpaidExecutionFrom</span>, <span class="ident">CurrencyAdapter</span>, <span class="ident">EnsureXcmOrigin</span>,
-	<span class="ident">FixedWeightBounds</span>, <span class="ident">IsConcrete</span>, <span class="ident">LocationInverter</span>, <span class="ident">NativeAsset</span>, <span class="ident">ParentAsSuperuser</span>,
-	<span class="ident">ParentIsDefault</span>, <span class="ident">RelayChainAsNative</span>, <span class="ident">SiblingParachainAsNative</span>, <span class="ident">SiblingParachainConvertsVia</span>,
-	<span class="ident">SignedAccountId32AsNative</span>, <span class="ident">SovereignSignedViaLocation</span>, <span class="ident">TakeWeightCredit</span>, <span class="ident">UsingComponents</span>,
+	<span class="ident">AccountId32Aliases</span>, <span class="ident">AllowTopLevelPaidExecutionFrom</span>, <span class="ident">AllowUnpaidExecutionFrom</span>, <span class="ident">CurrencyAdapter</span>,
+	<span class="ident">EnsureXcmOrigin</span>, <span class="ident">FixedWeightBounds</span>, <span class="ident">IsConcrete</span>, <span class="ident">LocationInverter</span>, <span class="ident">NativeAsset</span>, <span class="ident">ParentIsDefault</span>,
+	<span class="ident">RelayChainAsNative</span>, <span class="ident">SiblingParachainAsNative</span>, <span class="ident">SiblingParachainConvertsVia</span>,
+	<span class="ident">SignedAccountId32AsNative</span>, <span class="ident">SignedToAccountId32</span>, <span class="ident">SovereignSignedViaLocation</span>, <span class="ident">TakeWeightCredit</span>,
+	<span class="ident">UsingComponents</span>,
 };
 <span class="kw">use</span> <span class="ident">xcm_executor</span>::{<span class="ident">Config</span>, <span class="ident">XcmExecutor</span>};
 
@@ -973,18 +954,8 @@
 	<span class="ident">Block</span>,
 	<span class="ident">frame_system::ChainContext</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">Runtime</span>,
-	<span class="ident">AllPallets</span>,
-	<span class="ident">OnRuntimeUpgrade</span>,
+	<span class="ident">AllPalletsWithSystem</span>,
 <span class="op">&gt;</span>;
-
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OnRuntimeUpgrade</span>;
-<span class="kw">impl</span> <span class="ident">frame_support::traits::OnRuntimeUpgrade</span> <span class="kw">for</span> <span class="ident">OnRuntimeUpgrade</span> {
-	<span class="kw">fn</span> <span class="ident">on_runtime_upgrade</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
-		<span class="ident">frame_support::migrations::migrate_from_pallet_version_to_storage_version</span>::<span class="op">&lt;</span>
-			<span class="ident">AllPalletsWithSystem</span>,
-		<span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">RocksDbWeight::get</span>())
-	}
-}
 
 <span class="doccomment">/// Handles converting a weight scalar to a fee value, based on the scale and granularity of the</span>
 <span class="doccomment">/// node&#39;s balance type.</span>
@@ -999,7 +970,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WeightToFee</span>;
 <span class="kw">impl</span> <span class="ident">WeightToFeePolynomial</span> <span class="kw">for</span> <span class="ident">WeightToFee</span> {
 	<span class="kw">type</span> <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">Balance</span>;
-	<span class="kw">fn</span> <span class="ident">polynomial</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WeightToFeeCoefficients</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Balance</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">polynomial</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WeightToFeeCoefficients</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Balance</span><span class="op">&gt;</span> {
 		<span class="comment">// in Rococo, extrinsic base weight (smallest non-zero weight) is mapped to 1 MILLIUNIT:</span>
 		<span class="comment">// in our template, we map to 1/10 of that, or 1/10 MILLIUNIT</span>
 		<span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">MILLIUNIT</span> <span class="op">/</span> <span class="number">10</span>;
@@ -1069,11 +1040,8 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MILLIUNIT</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="number">1_000_000_000</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MICROUNIT</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="number">1_000_000</span>;
 
-<span class="doccomment">/// The existential deposit. Set to 1/10 of the Rococo Relay Chain.</span>
+<span class="doccomment">/// The existential deposit. Set to 1/10 of the Connected Relay Chain.</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EXISTENTIAL_DEPOSIT</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">MILLIUNIT</span>;
-
-<span class="comment">// 1 in 4 blocks (on average, not counting collisions) will be primary babe blocks.</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PRIMARY_PROBABILITY</span>: (<span class="ident">u64</span>, <span class="ident">u64</span>) <span class="op">=</span> (<span class="number">1</span>, <span class="number">4</span>);
 
 <span class="doccomment">/// We assume that ~5% of the block weight is consumed by `on_initialize` handlers. This is</span>
 <span class="doccomment">/// used to limit the maximal weight of a single extrinsic.</span>
@@ -1246,14 +1214,12 @@
 	<span class="kw">type</span> <span class="ident">ReservedXcmpWeight</span> <span class="op">=</span> <span class="ident">ReservedXcmpWeight</span>;
 }
 
-<span class="kw">impl</span> <span class="ident">pallet_randomness_collective_flip::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}
-
 <span class="kw">impl</span> <span class="ident">parachain_info::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}
 
 <span class="kw">impl</span> <span class="ident">cumulus_pallet_aura_ext::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}
 
 <span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">RocLocation</span>: <span class="ident">MultiLocation</span> <span class="op">=</span> <span class="ident">MultiLocation::parent</span>();
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">RelayLocation</span>: <span class="ident">MultiLocation</span> <span class="op">=</span> <span class="ident">MultiLocation::parent</span>();
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">RelayNetwork</span>: <span class="ident">NetworkId</span> <span class="op">=</span> <span class="ident">NetworkId::Any</span>;
 	<span class="kw">pub</span> <span class="ident">RelayChainOrigin</span>: <span class="ident">Origin</span> <span class="op">=</span> <span class="ident">cumulus_pallet_xcm::Origin::Relay</span>.<span class="ident">into</span>();
 	<span class="kw">pub</span> <span class="ident">Ancestry</span>: <span class="ident">MultiLocation</span> <span class="op">=</span> <span class="ident">Parachain</span>(<span class="ident">ParachainInfo::parachain_id</span>().<span class="ident">into</span>()).<span class="ident">into</span>();
@@ -1276,7 +1242,7 @@
 	<span class="comment">// Use this currency:</span>
 	<span class="ident">Balances</span>,
 	<span class="comment">// Use this currency when it is a fungible asset matching the given location or name:</span>
-	<span class="ident">IsConcrete</span><span class="op">&lt;</span><span class="ident">RocLocation</span><span class="op">&gt;</span>,
+	<span class="ident">IsConcrete</span><span class="op">&lt;</span><span class="ident">RelayLocation</span><span class="op">&gt;</span>,
 	<span class="comment">// Do a simple punn to convert an AccountId32 MultiLocation into a native chain account ID:</span>
 	<span class="ident">LocationToAccountId</span>,
 	<span class="comment">// Our chain&#39;s account ID type (we can&#39;t get away without mentioning it explicitly):</span>
@@ -1294,14 +1260,11 @@
 	<span class="comment">// foreign chains who want to have a local sovereign account on this chain which they control.</span>
 	<span class="ident">SovereignSignedViaLocation</span><span class="op">&lt;</span><span class="ident">LocationToAccountId</span>, <span class="ident">Origin</span><span class="op">&gt;</span>,
 	<span class="comment">// Native converter for Relay-chain (Parent) location; will converts to a `Relay` origin when</span>
-	<span class="comment">// recognised.</span>
+	<span class="comment">// recognized.</span>
 	<span class="ident">RelayChainAsNative</span><span class="op">&lt;</span><span class="ident">RelayChainOrigin</span>, <span class="ident">Origin</span><span class="op">&gt;</span>,
 	<span class="comment">// Native converter for sibling Parachains; will convert to a `SiblingPara` origin when</span>
-	<span class="comment">// recognised.</span>
+	<span class="comment">// recognized.</span>
 	<span class="ident">SiblingParachainAsNative</span><span class="op">&lt;</span><span class="ident">cumulus_pallet_xcm::Origin</span>, <span class="ident">Origin</span><span class="op">&gt;</span>,
-	<span class="comment">// Superuser converter for the Relay-chain (Parent) location. This will allow it to issue a</span>
-	<span class="comment">// transaction from the Root origin.</span>
-	<span class="ident">ParentAsSuperuser</span><span class="op">&lt;</span><span class="ident">Origin</span><span class="op">&gt;</span>,
 	<span class="comment">// Native signed account converter; this just converts an `AccountId32` origin into a normal</span>
 	<span class="comment">// `Origin::Signed` origin of the same 32-byte value.</span>
 	<span class="ident">SignedAccountId32AsNative</span><span class="op">&lt;</span><span class="ident">RelayNetwork</span>, <span class="ident">Origin</span><span class="op">&gt;</span>,
@@ -1321,22 +1284,12 @@
 		<span class="ident">MultiLocation</span> { <span class="ident">parents</span>: <span class="number">1</span>, <span class="ident">interior</span>: <span class="ident">X1</span>(<span class="ident">Plurality</span> { <span class="ident">id</span>: <span class="ident">BodyId::Executive</span>, .. }) }
 	};
 }
-<span class="macro">match_type!</span> {
-	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ParentOrSiblings</span>: <span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="ident">MultiLocation</span><span class="op">&gt;</span> <span class="op">=</span> {
-		<span class="ident">MultiLocation</span> { <span class="ident">parents</span>: <span class="number">1</span>, <span class="ident">interior</span>: <span class="ident">Here</span> } <span class="op">|</span>
-		<span class="ident">MultiLocation</span> { <span class="ident">parents</span>: <span class="number">1</span>, <span class="ident">interior</span>: <span class="ident">X1</span>(<span class="kw">_</span>) }
-	};
-}
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Barrier</span> <span class="op">=</span> (
 	<span class="ident">TakeWeightCredit</span>,
 	<span class="ident">AllowTopLevelPaidExecutionFrom</span><span class="op">&lt;</span><span class="ident">Everything</span><span class="op">&gt;</span>,
 	<span class="ident">AllowUnpaidExecutionFrom</span><span class="op">&lt;</span><span class="ident">ParentOrParentsExecutivePlurality</span><span class="op">&gt;</span>,
 	<span class="comment">// ^^^ Parent and its exec plurality get free execution</span>
-	<span class="comment">// Expected responses are OK.</span>
-	<span class="ident">AllowKnownQueryResponses</span><span class="op">&lt;</span><span class="ident">PolkadotXcm</span><span class="op">&gt;</span>,
-	<span class="comment">// Subscriptions for version tracking are OK.</span>
-	<span class="ident">AllowSubscriptionsFrom</span><span class="op">&lt;</span><span class="ident">ParentOrSiblings</span><span class="op">&gt;</span>,
 );
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">XcmConfig</span>;
@@ -1347,11 +1300,11 @@
 	<span class="kw">type</span> <span class="ident">AssetTransactor</span> <span class="op">=</span> <span class="ident">LocalAssetTransactor</span>;
 	<span class="kw">type</span> <span class="ident">OriginConverter</span> <span class="op">=</span> <span class="ident">XcmOriginToTransactDispatchOrigin</span>;
 	<span class="kw">type</span> <span class="ident">IsReserve</span> <span class="op">=</span> <span class="ident">NativeAsset</span>;
-	<span class="kw">type</span> <span class="ident">IsTeleporter</span> <span class="op">=</span> <span class="ident">NativeAsset</span>; <span class="comment">// Should be enough to allow teleportation of ROC</span>
+	<span class="kw">type</span> <span class="ident">IsTeleporter</span> <span class="op">=</span> (); <span class="comment">// Teleporting is disabled.</span>
 	<span class="kw">type</span> <span class="ident">LocationInverter</span> <span class="op">=</span> <span class="ident">LocationInverter</span><span class="op">&lt;</span><span class="ident">Ancestry</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">Barrier</span> <span class="op">=</span> <span class="ident">Barrier</span>;
 	<span class="kw">type</span> <span class="ident">Weigher</span> <span class="op">=</span> <span class="ident">FixedWeightBounds</span><span class="op">&lt;</span><span class="ident">UnitWeightCost</span>, <span class="ident">Call</span>, <span class="ident">MaxInstructions</span><span class="op">&gt;</span>;
-	<span class="kw">type</span> <span class="ident">Trader</span> <span class="op">=</span> <span class="ident">UsingComponents</span><span class="op">&lt;</span><span class="ident">IdentityFee</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span>, <span class="ident">RocLocation</span>, <span class="ident">AccountId</span>, <span class="ident">Balances</span>, ()<span class="op">&gt;</span>;
+	<span class="kw">type</span> <span class="ident">Trader</span> <span class="op">=</span> <span class="ident">UsingComponents</span><span class="op">&lt;</span><span class="ident">IdentityFee</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span>, <span class="ident">RelayLocation</span>, <span class="ident">AccountId</span>, <span class="ident">Balances</span>, ()<span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">ResponseHandler</span> <span class="op">=</span> <span class="ident">PolkadotXcm</span>;
 	<span class="kw">type</span> <span class="ident">AssetTrap</span> <span class="op">=</span> <span class="ident">PolkadotXcm</span>;
 	<span class="kw">type</span> <span class="ident">AssetClaims</span> <span class="op">=</span> <span class="ident">PolkadotXcm</span>;
@@ -1363,7 +1316,7 @@
 }
 
 <span class="doccomment">/// No local origins on this chain are allowed to dispatch XCM sends/executions.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LocalOriginToLocation</span> <span class="op">=</span> ();
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LocalOriginToLocation</span> <span class="op">=</span> <span class="ident">SignedToAccountId32</span><span class="op">&lt;</span><span class="ident">Origin</span>, <span class="ident">AccountId</span>, <span class="ident">RelayNetwork</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// The means for routing XCM messages which are not for local execution into the right message</span>
 <span class="doccomment">/// queues.</span>
@@ -1379,16 +1332,19 @@
 	<span class="kw">type</span> <span class="ident">SendXcmOrigin</span> <span class="op">=</span> <span class="ident">EnsureXcmOrigin</span><span class="op">&lt;</span><span class="ident">Origin</span>, <span class="ident">LocalOriginToLocation</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">XcmRouter</span> <span class="op">=</span> <span class="ident">XcmRouter</span>;
 	<span class="kw">type</span> <span class="ident">ExecuteXcmOrigin</span> <span class="op">=</span> <span class="ident">EnsureXcmOrigin</span><span class="op">&lt;</span><span class="ident">Origin</span>, <span class="ident">LocalOriginToLocation</span><span class="op">&gt;</span>;
-	<span class="kw">type</span> <span class="ident">XcmExecuteFilter</span> <span class="op">=</span> <span class="ident">Everything</span>;
+	<span class="kw">type</span> <span class="ident">XcmExecuteFilter</span> <span class="op">=</span> <span class="ident">Nothing</span>;
+	<span class="comment">// ^ Disable dispatchable execute on the XCM pallet.</span>
+	<span class="comment">// Needs to be `Everything` for local testing.</span>
 	<span class="kw">type</span> <span class="ident">XcmExecutor</span> <span class="op">=</span> <span class="ident">XcmExecutor</span><span class="op">&lt;</span><span class="ident">XcmConfig</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">XcmTeleportFilter</span> <span class="op">=</span> <span class="ident">Everything</span>;
-	<span class="kw">type</span> <span class="ident">XcmReserveTransferFilter</span> <span class="op">=</span> <span class="ident">Everything</span>;
+	<span class="kw">type</span> <span class="ident">XcmReserveTransferFilter</span> <span class="op">=</span> <span class="ident">Nothing</span>;
 	<span class="kw">type</span> <span class="ident">Weigher</span> <span class="op">=</span> <span class="ident">FixedWeightBounds</span><span class="op">&lt;</span><span class="ident">UnitWeightCost</span>, <span class="ident">Call</span>, <span class="ident">MaxInstructions</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">LocationInverter</span> <span class="op">=</span> <span class="ident">LocationInverter</span><span class="op">&lt;</span><span class="ident">Ancestry</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">Origin</span> <span class="op">=</span> <span class="ident">Origin</span>;
 	<span class="kw">type</span> <span class="ident">Call</span> <span class="op">=</span> <span class="ident">Call</span>;
 
 	<span class="kw">const</span> <span class="ident">VERSION_DISCOVERY_QUEUE_SIZE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
+	<span class="comment">// ^ Override for AdvertisedXcmVersion default</span>
 	<span class="kw">type</span> <span class="ident">AdvertisedXcmVersion</span> <span class="op">=</span> <span class="ident">pallet_xcm::CurrentXcmVersion</span>;
 }
 
@@ -1445,12 +1401,8 @@
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ExecutiveBody</span>: <span class="ident">BodyId</span> <span class="op">=</span> <span class="ident">BodyId::Executive</span>;
 }
 
-<span class="comment">// We allow root and the Relay Chain council to execute privileged collator selection operations.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CollatorSelectionUpdateOrigin</span> <span class="op">=</span> <span class="ident">EnsureOneOf</span><span class="op">&lt;</span>
-	<span class="ident">AccountId</span>,
-	<span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
-	<span class="ident">EnsureXcm</span><span class="op">&lt;</span><span class="ident">IsMajorityOfBody</span><span class="op">&lt;</span><span class="ident">RocLocation</span>, <span class="ident">ExecutiveBody</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span>;
+<span class="comment">// We allow root only to execute privileged collator selection operations.</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CollatorSelectionUpdateOrigin</span> <span class="op">=</span> <span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>;
 
 <span class="kw">impl</span> <span class="ident">pallet_collator_selection::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
 	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
@@ -1485,9 +1437,8 @@
 		<span class="ident">ParachainSystem</span>: <span class="ident">cumulus_pallet_parachain_system</span>::{
 			<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Config</span>, <span class="ident">Storage</span>, <span class="ident">Inherent</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">ValidateUnsigned</span>,
 		} <span class="op">=</span> <span class="number">1</span>,
-		<span class="ident">RandomnessCollectiveFlip</span>: <span class="ident">pallet_randomness_collective_flip</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>} <span class="op">=</span> <span class="number">2</span>,
-		<span class="ident">Timestamp</span>: <span class="ident">pallet_timestamp</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Inherent</span>} <span class="op">=</span> <span class="number">3</span>,
-		<span class="ident">ParachainInfo</span>: <span class="ident">parachain_info</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>, <span class="ident">Config</span>} <span class="op">=</span> <span class="number">4</span>,
+		<span class="ident">Timestamp</span>: <span class="ident">pallet_timestamp</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Inherent</span>} <span class="op">=</span> <span class="number">2</span>,
+		<span class="ident">ParachainInfo</span>: <span class="ident">parachain_info</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>, <span class="ident">Config</span>} <span class="op">=</span> <span class="number">3</span>,
 
 		<span class="comment">// Monetary stuff.</span>
 		<span class="ident">Balances</span>: <span class="ident">pallet_balances</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">10</span>,
@@ -1618,6 +1569,18 @@
 		}
 	}
 
+	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try-runtime&quot;</span>)]</span>
+	<span class="kw">impl</span> <span class="ident">frame_try_runtime::TryRuntime</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+		<span class="kw">fn</span> <span class="ident">on_runtime_upgrade</span>() <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Weight</span>, <span class="ident">Weight</span>) {
+			<span class="macro">log::info!</span>(<span class="string">&quot;try-runtime::on_runtime_upgrade parachain-template.&quot;</span>);
+			<span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident">Executive::try_runtime_upgrade</span>().<span class="ident">unwrap</span>();
+			(<span class="ident">weight</span>, <span class="ident">RuntimeBlockWeights::get</span>().<span class="ident">max_block</span>)
+		}
+
+		<span class="kw">fn</span> <span class="ident">execute_block_no_check</span>(<span class="ident">block</span>: <span class="ident">Block</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+			<span class="ident">Executive::execute_block_no_check</span>(<span class="ident">block</span>)
+		}
+	}
 
 	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>)]</span>
 	<span class="kw">impl</span> <span class="ident">frame_benchmarking::Benchmark</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
@@ -1709,7 +1672,7 @@
 	<span class="ident">BlockExecutor</span> <span class="op">=</span> <span class="ident">cumulus_pallet_aura_ext::BlockExecutor</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Executive</span><span class="op">&gt;</span>,
 	<span class="ident">CheckInherents</span> <span class="op">=</span> <span class="ident">CheckInherents</span>,
 }
-</pre></div>
+</code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="parachain_template_runtime" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
 </body></html>

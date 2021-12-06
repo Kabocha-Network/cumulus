@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pallets&#x2F;xcmp-queue&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../cumulus_pallet_xcmp_queue/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input"name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pallets&#x2F;xcmp-queue&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../cumulus_pallet_xcmp_queue/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -780,8 +780,79 @@
 <span id="780">780</span>
 <span id="781">781</span>
 <span id="782">782</span>
-</pre><pre class="rust">
-<span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+</pre><pre class="rust"><code><span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
 <span class="comment">// Substrate is free software: you can redistribute it and/or modify</span>
@@ -846,7 +917,7 @@
 		<span class="kw">type</span> <span class="ident">Event</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">IsType</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::Event</span><span class="op">&gt;</span>;
 
 		<span class="doccomment">/// Something to execute an XCM message. We need this to service the XCMoXCMP queue.</span>
-		<span class="kw">type</span> <span class="ident">XcmExecutor</span>: <span class="ident">ExecuteXcm</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Call</span><span class="op">&gt;</span>;
+		<span class="kw">type</span> <span class="ident">XcmExecutor</span>: <span class="ident">ExecuteXcm</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Call</span><span class="op">&gt;</span>;
 
 		<span class="doccomment">/// Information on the avaialble XCMP channels.</span>
 		<span class="kw">type</span> <span class="ident">ChannelInfo</span>: <span class="ident">GetChannelInfo</span>;
@@ -871,7 +942,7 @@
 	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Hooks</span><span class="op">&lt;</span><span class="ident">BlockNumberFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 		<span class="kw">fn</span> <span class="ident">on_idle</span>(<span class="ident">_now</span>: <span class="ident">T::BlockNumber</span>, <span class="ident">max_weight</span>: <span class="ident">Weight</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
 			<span class="comment">// on_idle processes additional messages with any remaining block weight.</span>
-			<span class="self">Self</span><span class="ident">::service_xcmp_queue</span>(<span class="ident">max_weight</span>)
+			<span class="ident"><span class="self">Self</span>::service_xcmp_queue</span>(<span class="ident">max_weight</span>)
 		}
 	}
 
@@ -907,11 +978,8 @@
 
 	<span class="doccomment">/// Status of the inbound XCMP channels.</span>
 	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
-	<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">type</span> <span class="ident">InboundXcmpStatus</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">StorageValue</span><span class="op">&lt;</span>
-		<span class="kw">_</span>,
-		<span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">ParaId</span>, <span class="ident">InboundStatus</span>, <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">RelayBlockNumber</span>, <span class="ident">XcmpMessageFormat</span>)<span class="op">&gt;</span>)<span class="op">&gt;</span>,
-		<span class="ident">ValueQuery</span>,
-	<span class="op">&gt;</span>;
+	<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">type</span> <span class="ident">InboundXcmpStatus</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span>
+		<span class="ident">StorageValue</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">InboundChannelDetails</span><span class="op">&gt;</span>, <span class="ident">ValueQuery</span><span class="op">&gt;</span>;
 
 	<span class="doccomment">/// Inbound aggregate XCMP messages. It can only be one per ParaId/block.</span>
 	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
@@ -933,7 +1001,7 @@
 	<span class="doccomment">/// The bool is true if there is a signal message waiting to be sent.</span>
 	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
 	<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">type</span> <span class="ident">OutboundXcmpStatus</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span>
-		<span class="ident">StorageValue</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">ParaId</span>, <span class="ident">OutboundStatus</span>, <span class="ident">bool</span>, <span class="ident">u16</span>, <span class="ident">u16</span>)<span class="op">&gt;</span>, <span class="ident">ValueQuery</span><span class="op">&gt;</span>;
+		<span class="ident">StorageValue</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">OutboundChannelDetails</span><span class="op">&gt;</span>, <span class="ident">ValueQuery</span><span class="op">&gt;</span>;
 
 	<span class="comment">// The new way of doing it:</span>
 	<span class="doccomment">/// The messages outbound in a given XCMP channel.</span>
@@ -952,15 +1020,66 @@
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Ord</span>, <span class="ident">PartialOrd</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">InboundStatus</span> {
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">InboundState</span> {
 	<span class="prelude-val">Ok</span>,
 	<span class="ident">Suspended</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">OutboundStatus</span> {
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">OutboundState</span> {
 	<span class="prelude-val">Ok</span>,
 	<span class="ident">Suspended</span>,
+}
+
+<span class="doccomment">/// Struct containing detailed information about the inbound channel.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Ord</span>, <span class="ident">PartialOrd</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InboundChannelDetails</span> {
+	<span class="doccomment">/// The `ParaId` of the parachain that this channel is connected with.</span>
+	<span class="ident">sender</span>: <span class="ident">ParaId</span>,
+	<span class="doccomment">/// The state of the channel.</span>
+	<span class="ident">state</span>: <span class="ident">InboundState</span>,
+	<span class="doccomment">/// The ordered metadata of each inbound message.</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// Contains info about the relay block number that the message was sent at, and the format</span>
+	<span class="doccomment">/// of the incoming message.</span>
+	<span class="ident">message_metadata</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">RelayBlockNumber</span>, <span class="ident">XcmpMessageFormat</span>)<span class="op">&gt;</span>,
+}
+
+<span class="doccomment">/// Struct containing detailed information about the outbound channel.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OutboundChannelDetails</span> {
+	<span class="doccomment">/// The `ParaId` of the parachain that this channel is connected with.</span>
+	<span class="ident">recipient</span>: <span class="ident">ParaId</span>,
+	<span class="doccomment">/// The state of the channel.</span>
+	<span class="ident">state</span>: <span class="ident">OutboundState</span>,
+	<span class="doccomment">/// Whether or not any signals exist in this channel.</span>
+	<span class="ident">signals_exist</span>: <span class="ident">bool</span>,
+	<span class="doccomment">/// The index of the first outbound message.</span>
+	<span class="ident">first_index</span>: <span class="ident">u16</span>,
+	<span class="doccomment">/// The index of the last outbound message.</span>
+	<span class="ident">last_index</span>: <span class="ident">u16</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">OutboundChannelDetails</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">recipient</span>: <span class="ident">ParaId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OutboundChannelDetails</span> {
+		<span class="ident">OutboundChannelDetails</span> {
+			<span class="ident">recipient</span>,
+			<span class="ident">state</span>: <span class="ident">OutboundState::Ok</span>,
+			<span class="ident">signals_exist</span>: <span class="bool-val">false</span>,
+			<span class="ident">first_index</span>: <span class="number">0</span>,
+			<span class="ident">last_index</span>: <span class="number">0</span>,
+		}
+	}
+
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_signals</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OutboundChannelDetails</span> {
+		<span class="self">self</span>.<span class="ident">signals_exist</span> <span class="op">=</span> <span class="bool-val">true</span>;
+		<span class="self">self</span>
+	}
+
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_suspended_state</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OutboundChannelDetails</span> {
+		<span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">OutboundState::Suspended</span>;
+		<span class="self">self</span>
+	}
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
@@ -1025,13 +1144,13 @@
 		}
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">OutboundXcmpStatus</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>();
-		<span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="ident">item</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="ident">recipient</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> {
-			<span class="ident">s</span>.<span class="ident">push</span>((<span class="ident">recipient</span>, <span class="ident">OutboundStatus::Ok</span>, <span class="bool-val">false</span>, <span class="number">0</span>, <span class="number">0</span>));
+		<span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="ident">item</span>.<span class="ident">recipient</span> <span class="op">=</span><span class="op">=</span> <span class="ident">recipient</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> {
+			<span class="ident">s</span>.<span class="ident">push</span>(<span class="ident">OutboundChannelDetails::new</span>(<span class="ident">recipient</span>));
 			<span class="ident">s</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>
 		});
-		<span class="kw">let</span> <span class="ident">have_active</span> <span class="op">=</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="number">4</span> <span class="op">&gt;</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="number">3</span>;
+		<span class="kw">let</span> <span class="ident">have_active</span> <span class="op">=</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="ident">last_index</span> <span class="op">&gt;</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="ident">first_index</span>;
 		<span class="kw">let</span> <span class="ident">appended</span> <span class="op">=</span> <span class="ident">have_active</span> <span class="op">&amp;&amp;</span>
-			<span class="op">&lt;</span><span class="ident">OutboundXcmpMessages</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="ident">recipient</span>, <span class="ident">s</span>[<span class="ident">index</span>].<span class="number">4</span> <span class="op">-</span> <span class="number">1</span>, <span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
+			<span class="op">&lt;</span><span class="ident">OutboundXcmpMessages</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="ident">recipient</span>, <span class="ident">s</span>[<span class="ident">index</span>].<span class="ident">last_index</span> <span class="op">-</span> <span class="number">1</span>, <span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
 				<span class="kw">if</span> <span class="ident">XcmpMessageFormat::decode_and_advance_with_depth_limit</span>(
 					<span class="ident">MAX_XCM_DECODE_DEPTH</span>,
 					<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">&amp;</span><span class="ident">s</span>[..],
@@ -1046,15 +1165,15 @@
 				<span class="kw">return</span> <span class="bool-val">true</span>
 			});
 		<span class="kw">if</span> <span class="ident">appended</span> {
-			<span class="prelude-val">Ok</span>((<span class="ident">s</span>[<span class="ident">index</span>].<span class="number">4</span> <span class="op">-</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="number">3</span> <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u32</span>)
+			<span class="prelude-val">Ok</span>((<span class="ident">s</span>[<span class="ident">index</span>].<span class="ident">last_index</span> <span class="op">-</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="ident">first_index</span> <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u32</span>)
 		} <span class="kw">else</span> {
 			<span class="comment">// Need to add a new page.</span>
-			<span class="kw">let</span> <span class="ident">page_index</span> <span class="op">=</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="number">4</span>;
-			<span class="ident">s</span>[<span class="ident">index</span>].<span class="number">4</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+			<span class="kw">let</span> <span class="ident">page_index</span> <span class="op">=</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="ident">last_index</span>;
+			<span class="ident">s</span>[<span class="ident">index</span>].<span class="ident">last_index</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_page</span> <span class="op">=</span> <span class="ident">format</span>.<span class="ident">encode</span>();
 			<span class="ident">new_page</span>.<span class="ident">extend_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>[..]);
 			<span class="op">&lt;</span><span class="ident">OutboundXcmpMessages</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="ident">recipient</span>, <span class="ident">page_index</span>, <span class="ident">new_page</span>);
-			<span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> (<span class="ident">s</span>[<span class="ident">index</span>].<span class="number">4</span> <span class="op">-</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="number">3</span> <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u32</span>;
+			<span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> (<span class="ident">s</span>[<span class="ident">index</span>].<span class="ident">last_index</span> <span class="op">-</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="ident">first_index</span> <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u32</span>;
 			<span class="op">&lt;</span><span class="ident">OutboundXcmpStatus</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">s</span>);
 			<span class="prelude-val">Ok</span>(<span class="ident">r</span>)
 		}
@@ -1064,10 +1183,10 @@
 	<span class="doccomment">/// block.</span>
 	<span class="kw">fn</span> <span class="ident">send_signal</span>(<span class="ident">dest</span>: <span class="ident">ParaId</span>, <span class="ident">signal</span>: <span class="ident">ChannelSignal</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), ()<span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">OutboundXcmpStatus</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>();
-		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">index</span>) <span class="op">=</span> <span class="ident">s</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="ident">item</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="ident">dest</span>) {
-			<span class="ident">s</span>[<span class="ident">index</span>].<span class="number">2</span> <span class="op">=</span> <span class="bool-val">true</span>;
+		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">index</span>) <span class="op">=</span> <span class="ident">s</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="ident">item</span>.<span class="ident">recipient</span> <span class="op">=</span><span class="op">=</span> <span class="ident">dest</span>) {
+			<span class="ident">s</span>[<span class="ident">index</span>].<span class="ident">signals_exist</span> <span class="op">=</span> <span class="bool-val">true</span>;
 		} <span class="kw">else</span> {
-			<span class="ident">s</span>.<span class="ident">push</span>((<span class="ident">dest</span>, <span class="ident">OutboundStatus::Ok</span>, <span class="bool-val">true</span>, <span class="number">0</span>, <span class="number">0</span>));
+			<span class="ident">s</span>.<span class="ident">push</span>(<span class="ident">OutboundChannelDetails::new</span>(<span class="ident">dest</span>).<span class="ident">with_signals</span>());
 		}
 		<span class="op">&lt;</span><span class="ident">SignalMessages</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="ident">dest</span>, <span class="op">|</span><span class="ident">page</span><span class="op">|</span> {
 			<span class="kw">if</span> <span class="ident">page</span>.<span class="ident">is_empty</span>() {
@@ -1082,14 +1201,14 @@
 	}
 
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_blob_message</span>(<span class="ident">recipient</span>: <span class="ident">ParaId</span>, <span class="ident">blob</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span>, <span class="ident">MessageSendError</span><span class="op">&gt;</span> {
-		<span class="self">Self</span><span class="ident">::send_fragment</span>(<span class="ident">recipient</span>, <span class="ident">XcmpMessageFormat::ConcatenatedEncodedBlob</span>, <span class="ident">blob</span>)
+		<span class="ident"><span class="self">Self</span>::send_fragment</span>(<span class="ident">recipient</span>, <span class="ident">XcmpMessageFormat::ConcatenatedEncodedBlob</span>, <span class="ident">blob</span>)
 	}
 
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_xcm_message</span>(
 		<span class="ident">recipient</span>: <span class="ident">ParaId</span>,
 		<span class="ident">xcm</span>: <span class="ident">VersionedXcm</span><span class="op">&lt;</span>()<span class="op">&gt;</span>,
 	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span>, <span class="ident">MessageSendError</span><span class="op">&gt;</span> {
-		<span class="self">Self</span><span class="ident">::send_fragment</span>(<span class="ident">recipient</span>, <span class="ident">XcmpMessageFormat::ConcatenatedVersionedXcm</span>, <span class="ident">xcm</span>)
+		<span class="ident"><span class="self">Self</span>::send_fragment</span>(<span class="ident">recipient</span>, <span class="ident">XcmpMessageFormat::ConcatenatedVersionedXcm</span>, <span class="ident">xcm</span>)
 	}
 
 	<span class="kw">fn</span> <span class="ident">create_shuffle</span>(<span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
@@ -1141,7 +1260,7 @@
 			},
 			<span class="prelude-val">Err</span>(()) <span class="op">=</span><span class="op">&gt;</span> (<span class="prelude-val">Err</span>(<span class="ident">XcmError::UnhandledXcmVersion</span>), <span class="ident">Event::BadVersion</span>(<span class="prelude-val">Some</span>(<span class="ident">hash</span>))),
 		};
-		<span class="self">Self</span><span class="ident">::deposit_event</span>(<span class="ident">event</span>);
+		<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">event</span>);
 		<span class="ident">result</span>
 	}
 
@@ -1163,9 +1282,11 @@
 						<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">remaining_fragments</span>,
 					) {
 						<span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident">max_weight</span> <span class="op">-</span> <span class="ident">weight_used</span>;
-						<span class="kw">match</span> <span class="self">Self</span><span class="ident">::handle_xcm_message</span>(<span class="ident">sender</span>, <span class="ident">sent_at</span>, <span class="ident">xcm</span>, <span class="ident">weight</span>) {
+						<span class="kw">match</span> <span class="ident"><span class="self">Self</span>::handle_xcm_message</span>(<span class="ident">sender</span>, <span class="ident">sent_at</span>, <span class="ident">xcm</span>, <span class="ident">weight</span>) {
 							<span class="prelude-val">Ok</span>(<span class="ident">used</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">weight_used</span> <span class="op">=</span> <span class="ident">weight_used</span>.<span class="ident">saturating_add</span>(<span class="ident">used</span>),
-							<span class="prelude-val">Err</span>(<span class="ident">XcmError::TooMuchWeightRequired</span>) <span class="op">=</span><span class="op">&gt;</span> {
+							<span class="prelude-val">Err</span>(<span class="ident">XcmError::WeightLimitReached</span>(<span class="ident">required</span>))
+								<span class="kw">if</span> <span class="ident">required</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">max_weight</span> <span class="op">=</span><span class="op">&gt;</span>
+							{
 								<span class="comment">// That message didn&#39;t get processed this time because of being</span>
 								<span class="comment">// too heavy. We leave it around for next time and bail.</span>
 								<span class="ident">remaining_fragments</span> <span class="op">=</span> <span class="ident">last_remaining_fragments</span>;
@@ -1187,7 +1308,7 @@
 					<span class="kw">match</span> <span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::decode_all</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">remaining_fragments</span>) {
 						<span class="prelude-val">Ok</span>(<span class="ident">blob</span>) <span class="kw">if</span> <span class="ident">remaining_fragments</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">last_remaining_fragments</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">&gt;</span> {
 							<span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident">max_weight</span> <span class="op">-</span> <span class="ident">weight_used</span>;
-							<span class="kw">match</span> <span class="self">Self</span><span class="ident">::handle_blob_message</span>(<span class="ident">sender</span>, <span class="ident">sent_at</span>, <span class="ident">blob</span>, <span class="ident">weight</span>) {
+							<span class="kw">match</span> <span class="ident"><span class="self">Self</span>::handle_blob_message</span>(<span class="ident">sender</span>, <span class="ident">sent_at</span>, <span class="ident">blob</span>, <span class="ident">weight</span>) {
 								<span class="prelude-val">Ok</span>(<span class="ident">used</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">weight_used</span> <span class="op">=</span> <span class="ident">weight_used</span>.<span class="ident">saturating_add</span>(<span class="ident">used</span>),
 								<span class="prelude-val">Err</span>(<span class="bool-val">true</span>) <span class="op">=</span><span class="op">&gt;</span> {
 									<span class="comment">// That message didn&#39;t get processed this time because of being</span>
@@ -1257,7 +1378,7 @@
 		<span class="kw">let</span> <span class="ident">QueueConfigData</span> { <span class="ident">resume_threshold</span>, <span class="ident">threshold_weight</span>, <span class="ident">weight_restrict_decay</span>, .. } <span class="op">=</span>
 			<span class="op">&lt;</span><span class="ident">QueueConfig</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>();
 
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shuffled</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::create_shuffle</span>(<span class="ident">status</span>.<span class="ident">len</span>());
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shuffled</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::create_shuffle</span>(<span class="ident">status</span>.<span class="ident">len</span>());
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight_used</span> <span class="op">=</span> <span class="number">0</span>;
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight_available</span> <span class="op">=</span> <span class="number">0</span>;
 
@@ -1274,7 +1395,7 @@
 			<span class="ident">max_weight</span>.<span class="ident">saturating_sub</span>(<span class="ident">weight_used</span>) <span class="op">&gt;</span><span class="op">=</span> <span class="ident">threshold_weight</span>
 		{
 			<span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">shuffled</span>[<span class="ident">shuffle_index</span>];
-			<span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="ident">status</span>[<span class="ident">index</span>].<span class="number">0</span>;
+			<span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="ident">status</span>[<span class="ident">index</span>].<span class="ident">sender</span>;
 
 			<span class="kw">if</span> <span class="ident">weight_available</span> <span class="op">!</span><span class="op">=</span> <span class="ident">max_weight</span> {
 				<span class="comment">// Get incrementally closer to freeing up max_weight for message execution over the</span>
@@ -1291,34 +1412,37 @@
 				}
 			}
 
-			<span class="kw">let</span> <span class="ident">weight_processed</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">status</span>[<span class="ident">index</span>].<span class="number">2</span>.<span class="ident">is_empty</span>() {
+			<span class="kw">let</span> <span class="ident">weight_processed</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">status</span>[<span class="ident">index</span>].<span class="ident">message_metadata</span>.<span class="ident">is_empty</span>() {
 				<span class="macro">debug_assert!</span>(<span class="bool-val">false</span>, <span class="string">&quot;channel exists in status; there must be messages; qed&quot;</span>);
 				<span class="number">0</span>
 			} <span class="kw">else</span> {
 				<span class="comment">// Process up to one block&#39;s worth for now.</span>
 				<span class="kw">let</span> <span class="ident">weight_remaining</span> <span class="op">=</span> <span class="ident">weight_available</span>.<span class="ident">saturating_sub</span>(<span class="ident">weight_used</span>);
-				<span class="kw">let</span> (<span class="ident">weight_processed</span>, <span class="ident">is_empty</span>) <span class="op">=</span>
-					<span class="self">Self</span><span class="ident">::process_xcmp_message</span>(<span class="ident">sender</span>, <span class="ident">status</span>[<span class="ident">index</span>].<span class="number">2</span>[<span class="number">0</span>], <span class="ident">weight_remaining</span>);
+				<span class="kw">let</span> (<span class="ident">weight_processed</span>, <span class="ident">is_empty</span>) <span class="op">=</span> <span class="ident"><span class="self">Self</span>::process_xcmp_message</span>(
+					<span class="ident">sender</span>,
+					<span class="ident">status</span>[<span class="ident">index</span>].<span class="ident">message_metadata</span>[<span class="number">0</span>],
+					<span class="ident">weight_remaining</span>,
+				);
 				<span class="kw">if</span> <span class="ident">is_empty</span> {
-					<span class="ident">status</span>[<span class="ident">index</span>].<span class="number">2</span>.<span class="ident">remove</span>(<span class="number">0</span>);
+					<span class="ident">status</span>[<span class="ident">index</span>].<span class="ident">message_metadata</span>.<span class="ident">remove</span>(<span class="number">0</span>);
 				}
 				<span class="ident">weight_processed</span>
 			};
 			<span class="ident">weight_used</span> <span class="op">+</span><span class="op">=</span> <span class="ident">weight_processed</span>;
 
-			<span class="kw">if</span> <span class="ident">status</span>[<span class="ident">index</span>].<span class="number">2</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">resume_threshold</span> <span class="op">&amp;&amp;</span>
-				<span class="ident">status</span>[<span class="ident">index</span>].<span class="number">1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">InboundStatus::Suspended</span>
+			<span class="kw">if</span> <span class="ident">status</span>[<span class="ident">index</span>].<span class="ident">message_metadata</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">resume_threshold</span> <span class="op">&amp;&amp;</span>
+				<span class="ident">status</span>[<span class="ident">index</span>].<span class="ident">state</span> <span class="op">=</span><span class="op">=</span> <span class="ident">InboundState::Suspended</span>
 			{
 				<span class="comment">// Resume</span>
-				<span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::send_signal</span>(<span class="ident">sender</span>, <span class="ident">ChannelSignal::Resume</span>);
+				<span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::send_signal</span>(<span class="ident">sender</span>, <span class="ident">ChannelSignal::Resume</span>);
 				<span class="macro">debug_assert!</span>(<span class="ident">r</span>.<span class="ident">is_ok</span>(), <span class="string">&quot;WARNING: Failed sending resume into suspended channel&quot;</span>);
-				<span class="ident">status</span>[<span class="ident">index</span>].<span class="number">1</span> <span class="op">=</span> <span class="ident">InboundStatus::Ok</span>;
+				<span class="ident">status</span>[<span class="ident">index</span>].<span class="ident">state</span> <span class="op">=</span> <span class="ident">InboundState::Ok</span>;
 			}
 
 			<span class="comment">// If there are more and we&#39;re making progress, we process them after we&#39;ve given the</span>
 			<span class="comment">// other channels a look in. If we&#39;ve still not unlocked all weight, then we set them</span>
 			<span class="comment">// up for processing a second time anyway.</span>
-			<span class="kw">if</span> <span class="op">!</span><span class="ident">status</span>[<span class="ident">index</span>].<span class="number">2</span>.<span class="ident">is_empty</span>() <span class="op">&amp;&amp;</span>
+			<span class="kw">if</span> <span class="op">!</span><span class="ident">status</span>[<span class="ident">index</span>].<span class="ident">message_metadata</span>.<span class="ident">is_empty</span>() <span class="op">&amp;&amp;</span>
 				(<span class="ident">weight_processed</span> <span class="op">&gt;</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">weight_available</span> <span class="op">!</span><span class="op">=</span> <span class="ident">max_weight</span>)
 			{
 				<span class="kw">if</span> <span class="ident">shuffle_index</span> <span class="op">+</span> <span class="number">1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">shuffled</span>.<span class="ident">len</span>() {
@@ -1331,7 +1455,7 @@
 		}
 
 		<span class="comment">// Only retain the senders that have non-empty queues.</span>
-		<span class="ident">status</span>.<span class="ident">retain</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="op">!</span><span class="ident">item</span>.<span class="number">2</span>.<span class="ident">is_empty</span>());
+		<span class="ident">status</span>.<span class="ident">retain</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="op">!</span><span class="ident">item</span>.<span class="ident">message_metadata</span>.<span class="ident">is_empty</span>());
 
 		<span class="op">&lt;</span><span class="ident">InboundXcmpStatus</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">status</span>);
 		<span class="ident">weight_used</span>
@@ -1339,28 +1463,28 @@
 
 	<span class="kw">fn</span> <span class="ident">suspend_channel</span>(<span class="ident">target</span>: <span class="ident">ParaId</span>) {
 		<span class="op">&lt;</span><span class="ident">OutboundXcmpStatus</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
-			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">index</span>) <span class="op">=</span> <span class="ident">s</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="ident">item</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="ident">target</span>) {
-				<span class="kw">let</span> <span class="ident">ok</span> <span class="op">=</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="number">1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">OutboundStatus::Ok</span>;
+			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">index</span>) <span class="op">=</span> <span class="ident">s</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="ident">item</span>.<span class="ident">recipient</span> <span class="op">=</span><span class="op">=</span> <span class="ident">target</span>) {
+				<span class="kw">let</span> <span class="ident">ok</span> <span class="op">=</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="ident">state</span> <span class="op">=</span><span class="op">=</span> <span class="ident">OutboundState::Ok</span>;
 				<span class="macro">debug_assert!</span>(<span class="ident">ok</span>, <span class="string">&quot;WARNING: Attempt to suspend channel that was not Ok.&quot;</span>);
-				<span class="ident">s</span>[<span class="ident">index</span>].<span class="number">1</span> <span class="op">=</span> <span class="ident">OutboundStatus::Suspended</span>;
+				<span class="ident">s</span>[<span class="ident">index</span>].<span class="ident">state</span> <span class="op">=</span> <span class="ident">OutboundState::Suspended</span>;
 			} <span class="kw">else</span> {
-				<span class="ident">s</span>.<span class="ident">push</span>((<span class="ident">target</span>, <span class="ident">OutboundStatus::Suspended</span>, <span class="bool-val">false</span>, <span class="number">0</span>, <span class="number">0</span>));
+				<span class="ident">s</span>.<span class="ident">push</span>(<span class="ident">OutboundChannelDetails::new</span>(<span class="ident">target</span>).<span class="ident">with_suspended_state</span>());
 			}
 		});
 	}
 
 	<span class="kw">fn</span> <span class="ident">resume_channel</span>(<span class="ident">target</span>: <span class="ident">ParaId</span>) {
 		<span class="op">&lt;</span><span class="ident">OutboundXcmpStatus</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
-			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">index</span>) <span class="op">=</span> <span class="ident">s</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="ident">item</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="ident">target</span>) {
-				<span class="kw">let</span> <span class="ident">suspended</span> <span class="op">=</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="number">1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">OutboundStatus::Suspended</span>;
+			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">index</span>) <span class="op">=</span> <span class="ident">s</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="ident">item</span>.<span class="ident">recipient</span> <span class="op">=</span><span class="op">=</span> <span class="ident">target</span>) {
+				<span class="kw">let</span> <span class="ident">suspended</span> <span class="op">=</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="ident">state</span> <span class="op">=</span><span class="op">=</span> <span class="ident">OutboundState::Suspended</span>;
 				<span class="macro">debug_assert!</span>(
 					<span class="ident">suspended</span>,
 					<span class="string">&quot;WARNING: Attempt to resume channel that was not suspended.&quot;</span>
 				);
-				<span class="kw">if</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="number">3</span> <span class="op">=</span><span class="op">=</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="number">4</span> {
+				<span class="kw">if</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="ident">first_index</span> <span class="op">=</span><span class="op">=</span> <span class="ident">s</span>[<span class="ident">index</span>].<span class="ident">last_index</span> {
 					<span class="ident">s</span>.<span class="ident">remove</span>(<span class="ident">index</span>);
 				} <span class="kw">else</span> {
-					<span class="ident">s</span>[<span class="ident">index</span>].<span class="number">1</span> <span class="op">=</span> <span class="ident">OutboundStatus::Ok</span>;
+					<span class="ident">s</span>[<span class="ident">index</span>].<span class="ident">state</span> <span class="op">=</span> <span class="ident">OutboundState::Ok</span>;
 				}
 			} <span class="kw">else</span> {
 				<span class="macro">debug_assert!</span>(<span class="bool-val">false</span>, <span class="string">&quot;WARNING: Attempt to resume channel that was not suspended.&quot;</span>);
@@ -1395,19 +1519,20 @@
 				<span class="kw">while</span> <span class="op">!</span><span class="ident">data_ref</span>.<span class="ident">is_empty</span>() {
 					<span class="kw">use</span> <span class="ident">ChannelSignal</span>::<span class="kw-2">*</span>;
 					<span class="kw">match</span> <span class="ident">ChannelSignal::decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">data_ref</span>) {
-						<span class="prelude-val">Ok</span>(<span class="ident">Suspend</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::suspend_channel</span>(<span class="ident">sender</span>),
-						<span class="prelude-val">Ok</span>(<span class="ident">Resume</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::resume_channel</span>(<span class="ident">sender</span>),
+						<span class="prelude-val">Ok</span>(<span class="ident">Suspend</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::suspend_channel</span>(<span class="ident">sender</span>),
+						<span class="prelude-val">Ok</span>(<span class="ident">Resume</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::resume_channel</span>(<span class="ident">sender</span>),
 						<span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">break</span>,
 					}
 				}
 			} <span class="kw">else</span> {
 				<span class="comment">// Record the fact we received it.</span>
-				<span class="kw">match</span> <span class="ident">status</span>.<span class="ident">binary_search_by_key</span>(<span class="kw-2">&amp;</span><span class="ident">sender</span>, <span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="ident">item</span>.<span class="number">0</span>) {
+				<span class="kw">match</span> <span class="ident">status</span>.<span class="ident">binary_search_by_key</span>(<span class="kw-2">&amp;</span><span class="ident">sender</span>, <span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="ident">item</span>.<span class="ident">sender</span>) {
 					<span class="prelude-val">Ok</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
-						<span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="ident">status</span>[<span class="ident">i</span>].<span class="number">2</span>.<span class="ident">len</span>();
-						<span class="kw">if</span> <span class="ident">count</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">suspend_threshold</span> <span class="op">&amp;&amp;</span> <span class="ident">status</span>[<span class="ident">i</span>].<span class="number">1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">InboundStatus::Ok</span> {
-							<span class="ident">status</span>[<span class="ident">i</span>].<span class="number">1</span> <span class="op">=</span> <span class="ident">InboundStatus::Suspended</span>;
-							<span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::send_signal</span>(<span class="ident">sender</span>, <span class="ident">ChannelSignal::Suspend</span>);
+						<span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="ident">status</span>[<span class="ident">i</span>].<span class="ident">message_metadata</span>.<span class="ident">len</span>();
+						<span class="kw">if</span> <span class="ident">count</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">suspend_threshold</span> <span class="op">&amp;&amp;</span> <span class="ident">status</span>[<span class="ident">i</span>].<span class="ident">state</span> <span class="op">=</span><span class="op">=</span> <span class="ident">InboundState::Ok</span>
+						{
+							<span class="ident">status</span>[<span class="ident">i</span>].<span class="ident">state</span> <span class="op">=</span> <span class="ident">InboundState::Suspended</span>;
+							<span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::send_signal</span>(<span class="ident">sender</span>, <span class="ident">ChannelSignal::Suspend</span>);
 							<span class="kw">if</span> <span class="ident">r</span>.<span class="ident">is_err</span>() {
 								<span class="macro">log::warn!</span>(
 									<span class="string">&quot;Attempt to suspend channel failed. Messages may be dropped.&quot;</span>
@@ -1415,7 +1540,7 @@
 							}
 						}
 						<span class="kw">if</span> (<span class="ident">count</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">&lt;</span> <span class="ident">drop_threshold</span> {
-							<span class="ident">status</span>[<span class="ident">i</span>].<span class="number">2</span>.<span class="ident">push</span>((<span class="ident">sent_at</span>, <span class="ident">format</span>));
+							<span class="ident">status</span>[<span class="ident">i</span>].<span class="ident">message_metadata</span>.<span class="ident">push</span>((<span class="ident">sent_at</span>, <span class="ident">format</span>));
 						} <span class="kw">else</span> {
 							<span class="macro">debug_assert!</span>(
 								<span class="bool-val">false</span>,
@@ -1423,7 +1548,11 @@
 							);
 						}
 					},
-					<span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">status</span>.<span class="ident">push</span>((<span class="ident">sender</span>, <span class="ident">InboundStatus::Ok</span>, <span class="macro">vec!</span>[(<span class="ident">sent_at</span>, <span class="ident">format</span>)])),
+					<span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">status</span>.<span class="ident">push</span>(<span class="ident">InboundChannelDetails</span> {
+						<span class="ident">sender</span>,
+						<span class="ident">state</span>: <span class="ident">InboundState::Ok</span>,
+						<span class="ident">message_metadata</span>: <span class="macro">vec!</span>[(<span class="ident">sent_at</span>, <span class="ident">format</span>)],
+					}),
 				}
 				<span class="comment">// Queue the payload for later execution.</span>
 				<span class="op">&lt;</span><span class="ident">InboundXcmpMessages</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="ident">sender</span>, <span class="ident">sent_at</span>, <span class="ident">data_ref</span>);
@@ -1435,7 +1564,7 @@
 		<span class="ident">status</span>.<span class="ident">sort</span>();
 		<span class="op">&lt;</span><span class="ident">InboundXcmpStatus</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">status</span>);
 
-		<span class="self">Self</span><span class="ident">::service_xcmp_queue</span>(<span class="ident">max_weight</span>)
+		<span class="ident"><span class="self">Self</span>::service_xcmp_queue</span>(<span class="ident">max_weight</span>)
 	}
 }
 
@@ -1447,47 +1576,53 @@
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">max_message_count</span>);
 
 		<span class="kw">for</span> <span class="ident">status</span> <span class="kw">in</span> <span class="ident">statuses</span>.<span class="ident">iter_mut</span>() {
-			<span class="kw">let</span> (<span class="ident">para_id</span>, <span class="ident">outbound_status</span>, <span class="kw-2">mut</span> <span class="ident">signalling</span>, <span class="kw-2">mut</span> <span class="ident">begin</span>, <span class="kw-2">mut</span> <span class="ident">end</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="ident">status</span>;
+			<span class="kw">let</span> <span class="ident">OutboundChannelDetails</span> {
+				<span class="ident">recipient</span>: <span class="ident">para_id</span>,
+				<span class="ident">state</span>: <span class="ident">outbound_state</span>,
+				<span class="kw-2">mut</span> <span class="ident">signals_exist</span>,
+				<span class="kw-2">mut</span> <span class="ident">first_index</span>,
+				<span class="kw-2">mut</span> <span class="ident">last_index</span>,
+			} <span class="op">=</span> <span class="kw-2">*</span><span class="ident">status</span>;
 
 			<span class="kw">if</span> <span class="ident">result</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">max_message_count</span> {
 				<span class="comment">// We check this condition in the beginning of the loop so that we don&#39;t include</span>
 				<span class="comment">// a message where the limit is 0.</span>
 				<span class="kw">break</span>
 			}
-			<span class="kw">if</span> <span class="ident">outbound_status</span> <span class="op">=</span><span class="op">=</span> <span class="ident">OutboundStatus::Suspended</span> {
+			<span class="kw">if</span> <span class="ident">outbound_state</span> <span class="op">=</span><span class="op">=</span> <span class="ident">OutboundState::Suspended</span> {
 				<span class="kw">continue</span>
 			}
 			<span class="kw">let</span> (<span class="ident">max_size_now</span>, <span class="ident">max_size_ever</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">T::ChannelInfo::get_channel_status</span>(<span class="ident">para_id</span>) {
 				<span class="ident">ChannelStatus::Closed</span> <span class="op">=</span><span class="op">&gt;</span> {
 					<span class="comment">// This means that there is no such channel anymore. Nothing to be done but</span>
 					<span class="comment">// swallow the messages and discard the status.</span>
-					<span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="ident">begin</span>..<span class="ident">end</span> {
+					<span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="ident">first_index</span>..<span class="ident">last_index</span> {
 						<span class="op">&lt;</span><span class="ident">OutboundXcmpMessages</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::remove</span>(<span class="ident">para_id</span>, <span class="ident">i</span>);
 					}
-					<span class="kw">if</span> <span class="ident">signalling</span> {
+					<span class="kw">if</span> <span class="ident">signals_exist</span> {
 						<span class="op">&lt;</span><span class="ident">SignalMessages</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::remove</span>(<span class="ident">para_id</span>);
 					}
-					<span class="kw-2">*</span><span class="ident">status</span> <span class="op">=</span> (<span class="ident">para_id</span>, <span class="ident">OutboundStatus::Ok</span>, <span class="bool-val">false</span>, <span class="number">0</span>, <span class="number">0</span>);
+					<span class="kw-2">*</span><span class="ident">status</span> <span class="op">=</span> <span class="ident">OutboundChannelDetails::new</span>(<span class="ident">para_id</span>);
 					<span class="kw">continue</span>
 				},
 				<span class="ident">ChannelStatus::Full</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">continue</span>,
 				<span class="ident">ChannelStatus::Ready</span>(<span class="ident">n</span>, <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">n</span>, <span class="ident">e</span>),
 			};
 
-			<span class="kw">let</span> <span class="ident">page</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">signalling</span> {
+			<span class="kw">let</span> <span class="ident">page</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">signals_exist</span> {
 				<span class="kw">let</span> <span class="ident">page</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">SignalMessages</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>(<span class="ident">para_id</span>);
 				<span class="kw">if</span> <span class="ident">page</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">max_size_now</span> {
 					<span class="op">&lt;</span><span class="ident">SignalMessages</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::remove</span>(<span class="ident">para_id</span>);
-					<span class="ident">signalling</span> <span class="op">=</span> <span class="bool-val">false</span>;
+					<span class="ident">signals_exist</span> <span class="op">=</span> <span class="bool-val">false</span>;
 					<span class="ident">page</span>
 				} <span class="kw">else</span> {
 					<span class="kw">continue</span>
 				}
-			} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">end</span> <span class="op">&gt;</span> <span class="ident">begin</span> {
-				<span class="kw">let</span> <span class="ident">page</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">OutboundXcmpMessages</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>(<span class="ident">para_id</span>, <span class="ident">begin</span>);
+			} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">last_index</span> <span class="op">&gt;</span> <span class="ident">first_index</span> {
+				<span class="kw">let</span> <span class="ident">page</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">OutboundXcmpMessages</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>(<span class="ident">para_id</span>, <span class="ident">first_index</span>);
 				<span class="kw">if</span> <span class="ident">page</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">max_size_now</span> {
-					<span class="op">&lt;</span><span class="ident">OutboundXcmpMessages</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::remove</span>(<span class="ident">para_id</span>, <span class="ident">begin</span>);
-					<span class="ident">begin</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+					<span class="op">&lt;</span><span class="ident">OutboundXcmpMessages</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::remove</span>(<span class="ident">para_id</span>, <span class="ident">first_index</span>);
+					<span class="ident">first_index</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
 					<span class="ident">page</span>
 				} <span class="kw">else</span> {
 					<span class="kw">continue</span>
@@ -1495,9 +1630,9 @@
 			} <span class="kw">else</span> {
 				<span class="kw">continue</span>
 			};
-			<span class="kw">if</span> <span class="ident">begin</span> <span class="op">=</span><span class="op">=</span> <span class="ident">end</span> {
-				<span class="ident">begin</span> <span class="op">=</span> <span class="number">0</span>;
-				<span class="ident">end</span> <span class="op">=</span> <span class="number">0</span>;
+			<span class="kw">if</span> <span class="ident">first_index</span> <span class="op">=</span><span class="op">=</span> <span class="ident">last_index</span> {
+				<span class="ident">first_index</span> <span class="op">=</span> <span class="number">0</span>;
+				<span class="ident">last_index</span> <span class="op">=</span> <span class="number">0</span>;
 			}
 
 			<span class="kw">if</span> <span class="ident">page</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="ident">max_size_ever</span> {
@@ -1509,7 +1644,13 @@
 				<span class="ident">result</span>.<span class="ident">push</span>((<span class="ident">para_id</span>, <span class="ident">page</span>));
 			}
 
-			<span class="kw-2">*</span><span class="ident">status</span> <span class="op">=</span> (<span class="ident">para_id</span>, <span class="ident">outbound_status</span>, <span class="ident">signalling</span>, <span class="ident">begin</span>, <span class="ident">end</span>);
+			<span class="kw-2">*</span><span class="ident">status</span> <span class="op">=</span> <span class="ident">OutboundChannelDetails</span> {
+				<span class="ident">recipient</span>: <span class="ident">para_id</span>,
+				<span class="ident">state</span>: <span class="ident">outbound_state</span>,
+				<span class="ident">signals_exist</span>,
+				<span class="ident">first_index</span>,
+				<span class="ident">last_index</span>,
+			};
 		}
 
 		<span class="comment">// Sort the outbound messages by ascending recipient para id to satisfy the acceptance</span>
@@ -1524,7 +1665,9 @@
 		<span class="comment">//</span>
 		<span class="comment">// To mitigate this we shift all processed elements towards the end of the vector using</span>
 		<span class="comment">// `rotate_left`. To get intuition how it works see the examples in its rustdoc.</span>
-		<span class="ident">statuses</span>.<span class="ident">retain</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="number">1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">OutboundStatus::Suspended</span> <span class="op">|</span><span class="op">|</span> <span class="ident">x</span>.<span class="number">2</span> <span class="op">|</span><span class="op">|</span> <span class="ident">x</span>.<span class="number">3</span> <span class="op">&lt;</span> <span class="ident">x</span>.<span class="number">4</span>);
+		<span class="ident">statuses</span>.<span class="ident">retain</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> {
+			<span class="ident">x</span>.<span class="ident">state</span> <span class="op">=</span><span class="op">=</span> <span class="ident">OutboundState::Suspended</span> <span class="op">|</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">signals_exist</span> <span class="op">|</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">first_index</span> <span class="op">&lt;</span> <span class="ident">x</span>.<span class="ident">last_index</span>
+		});
 
 		<span class="comment">// old_status_len must be &gt;= status.len() since we never add anything to status.</span>
 		<span class="kw">let</span> <span class="ident">pruned</span> <span class="op">=</span> <span class="ident">old_statuses_len</span> <span class="op">-</span> <span class="ident">statuses</span>.<span class="ident">len</span>();
@@ -1549,13 +1692,13 @@
 				<span class="kw">let</span> <span class="ident">versioned_xcm</span> <span class="op">=</span> <span class="ident">T::VersionWrapper::wrap_version</span>(<span class="kw-2">&amp;</span><span class="ident">dest</span>, <span class="ident">msg</span>)
 					.<span class="ident">map_err</span>(<span class="op">|</span>()<span class="op">|</span> <span class="ident">SendError::DestinationUnsupported</span>)<span class="question-mark">?</span>;
 				<span class="kw">let</span> <span class="ident">hash</span> <span class="op">=</span> <span class="ident">T::Hashing::hash_of</span>(<span class="kw-2">&amp;</span><span class="ident">versioned_xcm</span>);
-				<span class="self">Self</span><span class="ident">::send_fragment</span>(
+				<span class="ident"><span class="self">Self</span>::send_fragment</span>(
 					(<span class="kw-2">*</span><span class="ident">id</span>).<span class="ident">into</span>(),
 					<span class="ident">XcmpMessageFormat::ConcatenatedVersionedXcm</span>,
 					<span class="ident">versioned_xcm</span>,
 				)
 				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">SendError::Transport</span>(<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span><span class="ident">::from</span>(<span class="ident">e</span>)))<span class="question-mark">?</span>;
-				<span class="self">Self</span><span class="ident">::deposit_event</span>(<span class="ident">Event::XcmpMessageSent</span>(<span class="prelude-val">Some</span>(<span class="ident">hash</span>)));
+				<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::XcmpMessageSent</span>(<span class="prelude-val">Some</span>(<span class="ident">hash</span>)));
 				<span class="prelude-val">Ok</span>(())
 			},
 			<span class="comment">// Anything else is unhandled. This includes a message this is meant for us.</span>
@@ -1563,7 +1706,7 @@
 		}
 	}
 }
-</pre></div>
+</code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="cumulus_pallet_xcmp_queue" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
 </body></html>
