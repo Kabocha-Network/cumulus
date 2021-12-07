@@ -23,10 +23,10 @@ use std::{io::Write, net::SocketAddr};
 
 fn load_spec(id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
 	Ok(match id {
-		"dev" => Box::new(chain_spec::development_config()),
-		"template-rococo" => Box::new(chain_spec::local_testnet_config()),
-		"cha" => Box::new(chain_spec::chachacha_config()), 
-		"" | "local" => Box::new(chain_spec::local_testnet_config()),
+		"dev" => Box::new(chain_spec::development_config(para_id)),
+		"cha" => Box::new(chain_spec::chachacha_config(para_id)),
+		"template-rococo" => Box::new(chain_spec::local_testnet_config(para_id)),
+		"" | "local" => Box::new(chain_spec::local_testnet_config(para_id)),
 		path => Box::new(chain_spec::ChainSpec::from_json_file(std::path::PathBuf::from(path))?),
 	})
 }
@@ -61,7 +61,7 @@ impl SubstrateCli for Cli {
 	}
 
 	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
-		load_spec(id)
+		load_spec(id, self.run.parachain_id.unwrap_or(2015).into())
 	}
 
 	fn native_runtime_version(_: &Box<dyn ChainSpec>) -> &'static RuntimeVersion {
@@ -193,8 +193,10 @@ pub fn run() -> Result<()> {
 			builder.with_profiling(sc_tracing::TracingReceiver::Log, "");
 			let _ = builder.init();
 
-			let block: Block =
-				generate_genesis_block(&load_spec(&params.chain.clone().unwrap_or_default())?)?;
+			let block: Block = generate_genesis_block(&load_spec(
+				&params.chain.clone().unwrap_or_default(),
+				params.parachain_id.unwrap_or(2015).into(),
+			)?)?;
 			let raw_header = block.header().encode();
 			let output_buf = if params.raw {
 				raw_header
@@ -270,7 +272,7 @@ pub fn run() -> Result<()> {
 					[RelayChainCli::executable_name()].iter().chain(cli.relay_chain_args.iter()),
 				);
 
-				let id = ParaId::from(para_id);
+				let id = ParaId::from(cli.run.parachain_id.or(para_id).unwrap_or(2015));
 
 				let parachain_account =
 					AccountIdConversion::<polkadot_primitives::v0::AccountId>::into_account(&id);
