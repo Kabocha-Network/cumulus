@@ -210,7 +210,7 @@ pub mod module {
 	#[pallet::storage]
 	#[pallet::getter(fn trading_pair_statuses)]
 	pub type TradingPairStatuses<T: Config> =
-	StorageMap<_, Twox64Concat, TradingPair, TradingPairStatus<Balance, T::BlockNumber>, ValueQuery>;
+		StorageMap<_, Twox64Concat, TradingPair, TradingPairStatus<Balance, T::BlockNumber>, ValueQuery>;
 
 	/// Provision of TradingPair by AccountId.
 	///
@@ -219,7 +219,7 @@ pub mod module {
 	#[pallet::storage]
 	#[pallet::getter(fn provisioning_pool)]
 	pub type ProvisioningPool<T: Config> =
-	StorageDoubleMap<_, Twox64Concat, TradingPair, Twox64Concat, T::AccountId, (Balance, Balance), ValueQuery>;
+		StorageDoubleMap<_, Twox64Concat, TradingPair, Twox64Concat, T::AccountId, (Balance, Balance), ValueQuery>;
 
 	/// Initial exchange rate, used to calculate the dex share amount for founders of provisioning
 	///
@@ -227,7 +227,7 @@ pub mod module {
 	#[pallet::storage]
 	#[pallet::getter(fn initial_share_exchange_rates)]
 	pub type InitialShareExchangeRates<T: Config> =
-	StorageMap<_, Twox64Concat, TradingPair, (ExchangeRate, ExchangeRate), ValueQuery>;
+		StorageMap<_, Twox64Concat, TradingPair, (ExchangeRate, ExchangeRate), ValueQuery>;
 
 	#[pallet::genesis_config]
 	pub struct GenesisConfig<T: Config> {
@@ -351,9 +351,9 @@ pub mod module {
 		/// - `stake_increment_share`: indicates whether to stake increased dex share to earn
 		///   incentives
 		#[pallet::weight(if *stake_increment_share {
-		<T as Config>::WeightInfo::add_liquidity_and_stake()
+			<T as Config>::WeightInfo::add_liquidity_and_stake()
 		} else {
-		<T as Config>::WeightInfo::add_liquidity()
+			<T as Config>::WeightInfo::add_liquidity()
 		})]
 		#[transactional]
 		pub fn add_liquidity(
@@ -429,9 +429,9 @@ pub mod module {
 		/// - `min_withdrawn_b`: minimum acceptable withrawn for currency_id_b.
 		/// - `by_unstake`: this flag indicates whether to withdraw share which is on incentives.
 		#[pallet::weight(if *by_unstake {
-		<T as Config>::WeightInfo::remove_liquidity_by_unstake()
+			<T as Config>::WeightInfo::remove_liquidity_by_unstake()
 		} else {
-		<T as Config>::WeightInfo::remove_liquidity()
+			<T as Config>::WeightInfo::remove_liquidity()
 		})]
 		#[transactional]
 		pub fn remove_liquidity(

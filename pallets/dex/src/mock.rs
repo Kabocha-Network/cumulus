@@ -199,16 +199,16 @@ impl ExtBuilder {
 		orml_tokens::GenesisConfig::<Runtime> {
 			balances: self.balances,
 		}
-			.assimilate_storage(&mut t)
-			.unwrap();
+		.assimilate_storage(&mut t)
+		.unwrap();
 
 		dex::GenesisConfig::<Runtime> {
 			initial_listing_trading_pairs: self.initial_listing_trading_pairs,
 			initial_enabled_trading_pairs: self.initial_enabled_trading_pairs,
 			initial_added_liquidity_pools: self.initial_added_liquidity_pools,
 		}
-			.assimilate_storage(&mut t)
-			.unwrap();
+		.assimilate_storage(&mut t)
+		.unwrap();
 
 		t.into()
 	}
