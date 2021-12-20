@@ -23,8 +23,8 @@ use frame_support::{
 	traits::{ExtrinsicCall, Get},
 	weights::{DispatchInfo, GetDispatchInfo},
 };
-use module_evm_utiltity::ethereum::{LegacyTransactionMessage, TransactionAction};
-use module_evm_utiltity_macro::keccak256;
+use module_evm_utility::ethereum::{LegacyTransactionMessage, TransactionAction};
+use module_evm_utility_macro::keccak256;
 use scale_info::TypeInfo;
 use sp_core::{H160, H256, U256};
 use sp_io::{crypto::secp256k1_ecdsa_recover, hashing::keccak_256};
