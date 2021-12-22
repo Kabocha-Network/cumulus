@@ -135,6 +135,7 @@ std = [
 	"xcm-builder/std",
 	"xcm-executor/std",
 	"xcm/std",
+	"module-dex/std",
 ]
 
 runtime-benchmarks = [
