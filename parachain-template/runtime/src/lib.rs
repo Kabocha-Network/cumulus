@@ -593,9 +593,6 @@ pub enum ProxyType {
 	NonTransfer,
 	Governance,
 	Staking,
-	IdentityJudgement,
-	CancelProxy,
-	Auction,
 }
 impl Default for ProxyType {
 	fn default() -> Self {
@@ -667,17 +664,6 @@ impl InstanceFilter<Call> for ProxyType {
 			ProxyType::Staking => {
 				matches!(c, Call::Staking(..) | Call::Session(..) | Call::Utility(..))
 			},
-			ProxyType::IdentityJudgement => matches!(
-				c,
-				Call::Identity(pallet_identity::Call::provide_judgement { .. }) | Call::Utility(..)
-			),
-			ProxyType::CancelProxy => {
-				matches!(c, Call::Proxy(pallet_proxy::Call::reject_announcement { .. }))
-			},
-			ProxyType::Auction => matches!(
-				c,
-				Call::Auctions(..) | Call::Crowdloan(..) | Call::Registrar(..) | Call::Slots(..)
-			),
 		}
 	}
 	fn is_superset(&self, o: &Self) -> bool {
@@ -731,6 +717,9 @@ construct_runtime!(
 		Session: pallet_session::{Pallet, Call, Storage, Event, Config<T>} = 22,
 		Aura: pallet_aura::{Pallet, Storage, Config<T>} = 23,
 		AuraExt: cumulus_pallet_aura_ext::{Pallet, Storage, Config} = 24,
+
+		// Proxy module. Late addition.
+		Proxy: pallet_proxy::{Pallet, Call, Storage, Event<T>} = 30,
 
 		// XCM helpers.
 		XcmpQueue: cumulus_pallet_xcmp_queue::{Pallet, Call, Storage, Event<T>} = 30,
@@ -868,6 +857,7 @@ impl_runtime_apis! {
 			list_benchmark!(list, extra, pallet_balances, Balances);
 			list_benchmark!(list, extra, pallet_timestamp, Timestamp);
 			list_benchmark!(list, extra, pallet_collator_selection, CollatorSelection);
+			list_benchmark!(list, extra, pallet_proxy, Proxy);
 
 			let storage_info = AllPalletsWithSystem::storage_info();
 
