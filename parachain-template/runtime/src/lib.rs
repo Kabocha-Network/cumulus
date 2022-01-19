@@ -588,6 +588,87 @@ impl pallet_template::Config for Runtime {
 	type Event = Event;
 }
 
+impl did::Config for Runtime {
+	type DidIdentifier = DidIdentifier;
+	type Event = Event;
+	type Call = Call;
+	type Origin = Origin;
+	type Currency = Balances;
+	type Deposit = DidDeposit;
+	type Fee = DidFee;
+	type FeeCollector = Treasury;
+
+	#[cfg(not(feature = "runtime-benchmarks"))]
+	type EnsureOrigin = did::EnsureDidOrigin<DidIdentifier, AccountId>;
+	#[cfg(not(feature = "runtime-benchmarks"))]
+	type OriginSuccess = did::DidRawOrigin<AccountId, DidIdentifier>;
+
+	#[cfg(feature = "runtime-benchmarks")]
+	type EnsureOrigin = EnsureSigned<DidIdentifier>;
+	#[cfg(feature = "runtime-benchmarks")]
+	type OriginSuccess = DidIdentifier;
+
+	type MaxNewKeyAgreementKeys = MaxNewKeyAgreementKeys;
+	type MaxTotalKeyAgreementKeys = MaxTotalKeyAgreementKeys;
+	type MaxPublicKeysPerDid = MaxPublicKeysPerDid;
+	type MaxBlocksTxValidity = MaxBlocksTxValidity;
+	type MaxNumberOfServicesPerDid = MaxNumberOfServicesPerDid;
+	type MaxServiceIdLength = MaxServiceIdLength;
+	type MaxServiceTypeLength = MaxServiceTypeLength;
+	type MaxServiceUrlLength = MaxServiceUrlLength;
+	type MaxNumberOfTypesPerService = MaxNumberOfTypesPerService;
+	type MaxNumberOfUrlsPerService = MaxNumberOfUrlsPerService;
+	type WeightInfo = weights::did::WeightInfo<Runtime>;
+}
+
+impl did::DeriveDidCallAuthorizationVerificationKeyRelationship for Call {
+	fn derive_verification_key_relationship(&self) -> did::DeriveDidCallKeyRelationshipResult {
+		/// ensure that all calls have the same VerificationKeyRelationship
+		fn single_key_relationship(calls: &[Call]) -> did::DeriveDidCallKeyRelationshipResult {
+			let init = calls
+				.get(0)
+				.ok_or(did::RelationshipDeriveError::InvalidCallParameter)?
+				.derive_verification_key_relationship()?;
+			calls
+				.iter()
+				.skip(1)
+				.map(Call::derive_verification_key_relationship)
+				.try_fold(init, |acc, next| {
+					if next.is_err() {
+						next
+					} else if Ok(acc) == next {
+						Ok(acc)
+					} else {
+						Err(did::RelationshipDeriveError::InvalidCallParameter)
+					}
+				})
+		}
+		match self {
+			Call::Attestation { .. } => Ok(did::DidVerificationKeyRelationship::AssertionMethod),
+			Call::Ctype { .. } => Ok(did::DidVerificationKeyRelationship::AssertionMethod),
+			Call::Delegation { .. } => Ok(did::DidVerificationKeyRelationship::CapabilityDelegation),
+			// DID creation is not allowed through the DID proxy.
+			Call::Did(did::Call::create { .. }) => Err(did::RelationshipDeriveError::NotCallableByDid),
+			Call::Did { .. } => Ok(did::DidVerificationKeyRelationship::Authentication),
+			Call::Utility(pallet_utility::Call::batch { calls }) => single_key_relationship(&calls[..]),
+			Call::Utility(pallet_utility::Call::batch_all { calls }) => single_key_relationship(&calls[..]),
+			#[cfg(not(feature = "runtime-benchmarks"))]
+			_ => Err(did::RelationshipDeriveError::NotCallableByDid),
+			// By default, returns the authentication key
+			#[cfg(feature = "runtime-benchmarks")]
+			_ => Ok(did::DidVerificationKeyRelationship::Authentication),
+		}
+	}
+
+	// Always return a System::remark() extrinsic call
+	#[cfg(feature = "runtime-benchmarks")]
+	fn get_call_for_did_call_benchmark() -> Self {
+		Call::System(frame_system::Call::remark { remark: vec![] })
+	}
+}
+
+
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -622,6 +703,9 @@ construct_runtime!(
 
 		// Template
 		TemplatePallet: pallet_template::{Pallet, Call, Storage, Event<T>}  = 40,
+
+		// KILT Pallets. Start indices 60 to leave room
+		Did: did = 64,
 	}
 );
 
@@ -750,6 +834,7 @@ impl_runtime_apis! {
 			list_benchmark!(list, extra, pallet_balances, Balances);
 			list_benchmark!(list, extra, pallet_timestamp, Timestamp);
 			list_benchmark!(list, extra, pallet_collator_selection, CollatorSelection);
+			list_benchmark!(list, extra, did, Did);
 
 			let storage_info = AllPalletsWithSystem::storage_info();
 
@@ -789,6 +874,7 @@ impl_runtime_apis! {
 			add_benchmark!(params, batches, pallet_timestamp, Timestamp);
 			add_benchmark!(params, batches, pallet_collator_selection, CollatorSelection);
 			add_benchmark!(params, batches, pallet_session, Session);
+			add_benchmark!(params, batches, did, Did);
 
 			if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
 			Ok(batches)
