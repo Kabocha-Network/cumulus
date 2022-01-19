@@ -588,6 +588,18 @@ impl pallet_template::Config for Runtime {
 	type Event = Event;
 }
 
+impl module_dex::Config for Runtime {
+	type Event = Event;
+	type Currency = Currencies;
+	type GetExchangeFee = GetExchangeFee;
+	type TradingPathLimit = TradingPathLimit;
+	type PalletId = DEXPalletId;
+	type Erc20InfoMapping = EvmErc20InfoMapping<Runtime>;
+	type DEXIncentives = Incentives;
+	type WeightInfo = weights::module_dex::WeightInfo<Runtime>;
+	type ListingOrigin = EnsureRootOrHalfGeneralCouncil;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -622,6 +634,9 @@ construct_runtime!(
 
 		// Template
 		TemplatePallet: pallet_template::{Pallet, Call, Storage, Event<T>}  = 40,
+
+		// Acala Core
+		Dex: module_dex::{Pallet, Storage, Call, Event<T>, Config<T>} = 91,
 	}
 );
 
@@ -750,6 +765,7 @@ impl_runtime_apis! {
 			list_benchmark!(list, extra, pallet_balances, Balances);
 			list_benchmark!(list, extra, pallet_timestamp, Timestamp);
 			list_benchmark!(list, extra, pallet_collator_selection, CollatorSelection);
+			list_benchmark!(list, extra, module_dex, benchmarking::dex);
 
 			let storage_info = AllPalletsWithSystem::storage_info();
 
@@ -789,6 +805,7 @@ impl_runtime_apis! {
 			add_benchmark!(params, batches, pallet_timestamp, Timestamp);
 			add_benchmark!(params, batches, pallet_collator_selection, CollatorSelection);
 			add_benchmark!(params, batches, pallet_session, Session);
+			add_benchmark!(list, extra, module_dex, benchmarking::dex);
 
 			if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
 			Ok(batches)
