@@ -304,6 +304,11 @@ fn testnet_genesis(
 			candidacy_bond: EXISTENTIAL_DEPOSIT * 16,
 			..Default::default()
 		},
+		// parachain_staking: ParachainStakingConfig {
+		// 	stakers,
+		// 	inflation_config,
+		// 	max_candidate_stake,
+		// },
 		session: parachain_template_runtime::SessionConfig {
 			keys: invulnerables
 				.into_iter()
