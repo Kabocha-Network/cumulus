@@ -6,6 +6,12 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
+pub mod constants;
+/// Import the template pallet.
+pub use pallet_template;
+pub use parachain_staking;
+
+
 use smallvec::smallvec;
 use sp_api::impl_runtime_apis;
 use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
@@ -41,6 +47,8 @@ pub use sp_runtime::{MultiAddress, Perbill, Permill};
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
 
+pub use parachain_staking::InflationInfo;
+
 // Polkadot Imports
 use pallet_xcm::XcmPassthrough;
 use polkadot_parachain::primitives::Sibling;
@@ -56,9 +64,6 @@ use xcm_builder::{
 	UsingComponents,
 };
 use xcm_executor::{Config, XcmExecutor};
-
-/// Import the template pallet.
-pub use pallet_template;
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
 pub type Signature = MultiSignature;
@@ -181,41 +186,6 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	transaction_version: 1,
 };
 
-/// This determines the average expected block time that we are targeting.
-/// Blocks will be produced at a minimum duration defined by `SLOT_DURATION`.
-/// `SLOT_DURATION` is picked up by `pallet_timestamp` which is in turn picked
-/// up by `pallet_aura` to implement `fn slot_duration()`.
-///
-/// Change this to adjust the block time.
-pub const MILLISECS_PER_BLOCK: u64 = 12000;
-
-// NOTE: Currently it is not possible to change the slot duration after the chain has started.
-//       Attempting to do so will brick block production.
-pub const SLOT_DURATION: u64 = MILLISECS_PER_BLOCK;
-
-// Time is measured by number of blocks.
-pub const MINUTES: BlockNumber = 60_000 / (MILLISECS_PER_BLOCK as BlockNumber);
-pub const HOURS: BlockNumber = MINUTES * 60;
-pub const DAYS: BlockNumber = HOURS * 24;
-
-// Unit = the base number of indivisible units for balances
-pub const UNIT: Balance = 1_000_000_000_000;
-pub const MILLIUNIT: Balance = 1_000_000_000;
-pub const MICROUNIT: Balance = 1_000_000;
-
-/// The existential deposit. Set to 1/10 of the Connected Relay Chain.
-pub const EXISTENTIAL_DEPOSIT: Balance = MILLIUNIT;
-
-/// We assume that ~5% of the block weight is consumed by `on_initialize` handlers. This is
-/// used to limit the maximal weight of a single extrinsic.
-const AVERAGE_ON_INITIALIZE_RATIO: Perbill = Perbill::from_percent(5);
-
-/// We allow `Normal` extrinsics to fill up the block up to 75%, the rest can be used by
-/// `Operational` extrinsics.
-const NORMAL_DISPATCH_RATIO: Perbill = Perbill::from_percent(75);
-
-/// We allow for 0.5 of a second of compute with a 12 second average block time.
-const MAXIMUM_BLOCK_WEIGHT: Weight = WEIGHT_PER_SECOND / 2;
 
 /// The version information used to identify this runtime when compiled natively.
 #[cfg(feature = "std")]
@@ -556,31 +526,64 @@ impl pallet_aura::Config for Runtime {
 }
 
 parameter_types! {
-	pub const PotId: PalletId = PalletId(*b"PotStake");
-	pub const MaxCandidates: u32 = 1000;
-	pub const MinCandidates: u32 = 5;
-	pub const SessionLength: BlockNumber = 6 * HOURS;
-	pub const MaxInvulnerables: u32 = 100;
-	pub const ExecutiveBody: BodyId = BodyId::Executive;
+	/// Minimum round length is 1 hour
+	pub const MinBlocksPerRound: BlockNumber = constants::staking::MIN_BLOCKS_PER_ROUND;
+	/// Default length of a round/session is 2 hours
+	pub const DefaultBlocksPerRound: BlockNumber = constants::staking::DEFAULT_BLOCKS_PER_ROUND;
+	/// Unstaked balance can be unlocked after 7 days
+	pub const StakeDuration: BlockNumber = constants::staking::STAKE_DURATION;
+	/// Collator exit requests are delayed by 4 hours (2 rounds/sessions)
+	pub const ExitQueueDelay: u32 = 2;
+	/// Minimum 16 collators selected per round, default at genesis and minimum forever after
+	pub const MinCollators: u32 = constants::staking::MIN_COLLATORS;
+	/// At least 4 candidates which cannot leave the network if there are no other candidates.
+	pub const MinRequiredCollators: u32 = 4;
+	/// We only allow one delegation per round.
+	pub const MaxDelegationsPerRound: u32 = 1;
+	/// Maximum 25 delegators per collator at launch, might be increased later
+	#[derive(Debug, PartialEq)]
+	pub const MaxDelegatorsPerCollator: u32 = 25;
+	/// Maximum 1 collator per delegator at launch, will be increased later
+	#[derive(Debug, PartialEq)]
+	pub const MaxCollatorsPerDelegator: u32 = 1;
+	/// Minimum stake required to be reserved to be a collator is 10_000
+	pub const MinCollatorStake: Balance = 10_000 * UNIT;
+	/// Minimum stake required to be reserved to be a delegator is 1000
+	pub const MinDelegatorStake: Balance = constants::staking::MIN_DELEGATOR_STAKE;
+	/// Maximum number of collator candidates
+	#[derive(Debug, PartialEq)]
+	pub const MaxCollatorCandidates: u32 = constants::staking::MAX_CANDIDATES;
+	/// Maximum number of concurrent requests to unlock unstaked balance
+	pub const MaxUnstakeRequests: u32 = 10;
+	/// The starting block number for the network rewards
+	// pub const NetworkRewardStart: BlockNumber = constants::treasury::INITIAL_PERIOD_LENGTH;
+	/// The rate in percent for the network rewards
+	pub const NetworkRewardRate: Perquintill = constants::staking::NETWORK_REWARD_RATE;
 }
 
-// We allow root only to execute privileged collator selection operations.
-pub type CollatorSelectionUpdateOrigin = EnsureRoot<AccountId>;
-
-impl pallet_collator_selection::Config for Runtime {
+impl parachain_staking::Config for Runtime {
 	type Event = Event;
 	type Currency = Balances;
-	type UpdateOrigin = CollatorSelectionUpdateOrigin;
-	type PotId = PotId;
-	type MaxCandidates = MaxCandidates;
-	type MinCandidates = MinCandidates;
-	type MaxInvulnerables = MaxInvulnerables;
-	// should be a multiple of session or things will get inconsistent
-	type KickThreshold = Period;
-	type ValidatorId = <Self as frame_system::Config>::AccountId;
-	type ValidatorIdOf = pallet_collator_selection::IdentityCollator;
-	type ValidatorRegistration = Session;
-	type WeightInfo = ();
+	type CurrencyBalance = Balance;
+	type MinBlocksPerRound = MinBlocksPerRound;
+	type DefaultBlocksPerRound = DefaultBlocksPerRound;
+	type StakeDuration = StakeDuration;
+	type ExitQueueDelay = ExitQueueDelay;
+	type MinCollators = MinCollators;
+	type MinRequiredCollators = MinRequiredCollators;
+	type MaxDelegationsPerRound = MaxDelegationsPerRound;
+	type MaxDelegatorsPerCollator = MaxDelegatorsPerCollator;
+	type MaxCollatorsPerDelegator = MaxCollatorsPerDelegator;
+	type MinCollatorStake = MinCollatorStake;
+	type MinCollatorCandidateStake = MinCollatorStake;
+	type MaxTopCandidates = MaxCollatorCandidates;
+	type MinDelegation = MinDelegatorStake;
+	type MinDelegatorStake = MinDelegatorStake;
+	type MaxUnstakeRequests = MaxUnstakeRequests;
+	type NetworkRewardRate = NetworkRewardRate;
+	type NetworkRewardStart = NetworkRewardStart;
+	type NetworkRewardBeneficiary = Treasury;
+	type WeightInfo = weights::parachain_staking::WeightInfo<Runtime>;
 }
 
 /// Configure the pallet template in pallets/template.
@@ -609,7 +612,7 @@ construct_runtime!(
 
 		// Collator support. The order of these 4 are important and shall not change.
 		Authorship: pallet_authorship::{Pallet, Call, Storage} = 20,
-		CollatorSelection: pallet_collator_selection::{Pallet, Call, Storage, Event<T>, Config<T>} = 21,
+		ParachainStaking: parachain_staking::{Pallet, Call, Storage, Event<T>, Config<T>} = 21,
 		Session: pallet_session::{Pallet, Call, Storage, Event, Config<T>} = 22,
 		Aura: pallet_aura::{Pallet, Storage, Config<T>} = 23,
 		AuraExt: cumulus_pallet_aura_ext::{Pallet, Storage, Config} = 24,
@@ -749,7 +752,7 @@ impl_runtime_apis! {
 			list_benchmark!(list, extra, frame_system, SystemBench::<Runtime>);
 			list_benchmark!(list, extra, pallet_balances, Balances);
 			list_benchmark!(list, extra, pallet_timestamp, Timestamp);
-			list_benchmark!(list, extra, pallet_collator_selection, CollatorSelection);
+			list_benchmark!(list, extra, parachain_staking, ParachainStaking);
 
 			let storage_info = AllPalletsWithSystem::storage_info();
 
@@ -787,7 +790,7 @@ impl_runtime_apis! {
 			add_benchmark!(params, batches, pallet_balances, Balances);
 			add_benchmark!(params, batches, pallet_session, SessionBench::<Runtime>);
 			add_benchmark!(params, batches, pallet_timestamp, Timestamp);
-			add_benchmark!(params, batches, pallet_collator_selection, CollatorSelection);
+			add_benchmark!(params, batches, parachain_staking, ParachainStaking);
 			add_benchmark!(params, batches, pallet_session, Session);
 
 			if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
