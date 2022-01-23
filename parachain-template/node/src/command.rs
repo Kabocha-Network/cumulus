@@ -21,6 +21,8 @@ use std::{io::Write, net::SocketAddr};
 fn load_spec(id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
 	Ok(match id {
 		"dev" => Box::new(chain_spec::development_config()),
+		"cha" => Box::new(chain_spec::chachacha_config()),
+		"pop" => Box::new(chain_spec::pop_art_config()), 
 		"template-rococo" => Box::new(chain_spec::local_testnet_config()),
 		"" | "local" => Box::new(chain_spec::local_testnet_config()),
 		path => Box::new(chain_spec::ChainSpec::from_json_file(std::path::PathBuf::from(path))?),
@@ -251,7 +253,7 @@ pub fn run() -> Result<()> {
 				);
 
 				let id = ParaId::from(para_id);
-
+				
 				let parachain_account =
 					AccountIdConversion::<polkadot_primitives::v0::AccountId>::into_account(&id);
 
