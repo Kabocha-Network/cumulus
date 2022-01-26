@@ -79,7 +79,7 @@ xcm = { git = "https://github.com/paritytech/polkadot", default-features = false
 xcm-builder = { git = "https://github.com/paritytech/polkadot", default-features = false , branch = "release-v0.9.13" }
 xcm-executor = { git = "https://github.com/paritytech/polkadot", default-features = false , branch = "release-v0.9.13" }
 
-# Democracy  pallet
+# Democracy pallet
 pallet-democracy = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.14" }
 
 # Election pallet
@@ -90,6 +90,9 @@ pallet-collective = { git = "https://github.com/paritytech/substrate", default-f
 
 # Multisig  pallet
 pallet-multisig = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.14" }
+
+# Proxy pallet
+pallet-proxy = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.14" }
 
 [features]
 default = [
@@ -143,6 +146,7 @@ std = [
 	"pallet-elections-phragmen/std",
 	"pallet-collective/std",
 	"pallet-multisig/std",
+	"pallet-proxy/std"
 ]
 
 runtime-benchmarks = [
