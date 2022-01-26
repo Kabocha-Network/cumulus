@@ -88,6 +88,9 @@ pallet-elections-phragmen = { git = "https://github.com/paritytech/substrate", d
 # Collective pallet
 pallet-collective = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.14"}
 
+# Multisig pallet
+pallet-multisig = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.14" }
+
 [features]
 default = [
 	"std",
@@ -139,6 +142,7 @@ std = [
 	"pallet-democracy/std",
 	"pallet-elections-phragmen/std",
 	"pallet-collective/std",
+	"pallet-multisig/std",
 ]
 
 runtime-benchmarks = [
