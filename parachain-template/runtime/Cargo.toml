@@ -88,7 +88,7 @@ pallet-elections-phragmen = { git = "https://github.com/paritytech/substrate", d
 # Collective pallet
 pallet-collective = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.14"}
 
-# Multisig pallet
+# Multisig  pallet
 pallet-multisig = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.14" }
 
 [features]
