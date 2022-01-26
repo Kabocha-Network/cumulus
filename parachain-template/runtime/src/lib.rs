@@ -555,6 +555,18 @@ impl pallet_aura::Config for Runtime {
 	type MaxAuthorities = MaxAuthorities;
 }
 
+type CouncilCollective = pallet_collective::Instance1;
+impl pallet_collective::Config<CouncilCollective> for Runtime {
+	type Origin = Origin;
+	type Proposal = Call;
+	type Event = Event;
+	type MotionDuration = CouncilMotionDuration;
+	type MaxProposals = CouncilMaxProposals;
+	type MaxMembers = CouncilMaxMembers;
+	type DefaultVote = pallet_collective::PrimeDefaultVote;
+	type WeightInfo = weights::pallet_collective_council::WeightInfo<Runtime>;
+}
+
 parameter_types! {
 	pub const PotId: PalletId = PalletId(*b"PotStake");
 	pub const MaxCandidates: u32 = 1000;
@@ -627,6 +639,9 @@ construct_runtime!(
 
 		// Governance stuff; uncallable initially.
 		PhragmenElection: pallet_elections_phragmen::{Pallet, Call, Storage, Event<T>, Config<T>} = 16,
+
+		// Governance stuff; uncallable initially.
+		Council: pallet_collective::<Instance1>::{Pallet, Call, Storage, Origin<T>, Event<T>, Config<T>} = 14,
 
 		// Collator support. The order of these 4 are important and shall not change.
 		Authorship: pallet_authorship::{Pallet, Call, Storage} = 20,
@@ -830,6 +845,7 @@ impl_runtime_apis! {
 			list_benchmark!(list, extra, pallet_collator_selection, CollatorSelection);
 			list_benchmark!(list, extra, pallet_democracy, Democracy);
 			list_benchmark!(list, extra, pallet_elections_phragmen, PhragmenElection);
+			list_benchmark!(list, extra, pallet_collective, Council);
 
 			let storage_info = AllPalletsWithSystem::storage_info();
 
@@ -871,6 +887,7 @@ impl_runtime_apis! {
 			add_benchmark!(params, batches, pallet_session, Session);
 			add_benchmark!(params, batches, pallet_democracy, Democracy);
 			add_benchmark!(params, batches, pallet_elections_phragmen, PhragmenElection);
+			add_benchmark!(params, batches, pallet_collective, Council);
 
 			if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
 			Ok(batches)
