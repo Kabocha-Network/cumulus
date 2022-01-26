@@ -82,6 +82,9 @@ xcm-executor = { git = "https://github.com/paritytech/polkadot", default-feature
 # Democracy  pallet
 pallet-democracy = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.14" }
 
+# Election pallet
+pallet-elections-phragmen = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.14" }
+
 [features]
 default = [
 	"std",
@@ -131,6 +134,7 @@ std = [
 	"xcm-executor/std",
 	"xcm/std",
 	"pallet-democracy/std",
+	"pallet-elections-phragmen/std",
 ]
 
 runtime-benchmarks = [
